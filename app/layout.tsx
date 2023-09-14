@@ -8,12 +8,6 @@ import { Provider } from "react-redux";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Le citoyen",
-  description:
-    "Application pour rationaliser les données entre hopitaux et etat civil",
-};
-
 export default function RootLayout({
   children,
 }: {
@@ -21,6 +15,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta
+          name="description"
+          content="Application pour rationaliser les données entre hopitaux et etat civil"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>"Le citoyen</title>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body className={nunito.className}>
         <Provider store={store}>{children}</Provider>
       </body>
