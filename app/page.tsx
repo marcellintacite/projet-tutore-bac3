@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Bouton from "@/components/Bouton";
 import Input from "@/components/login/Input";
 import Image from "next/image";
@@ -7,6 +7,9 @@ import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import ErrorInput from "@/components/login/Errors";
 import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { storeType } from "@/types/store";
+import { setUser } from "@/data/reducers/userReducer";
 
 type Inputs = {
   username: string;
@@ -14,6 +17,17 @@ type Inputs = {
 };
 
 export default function Login() {
+  const { isLogged } = useSelector((store: storeType) => store.user);
+  console.log(isLogged);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLogged) {
+      router.push("/dashboard");
+    }
+  });
+
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -22,14 +36,18 @@ export default function Login() {
   } = useForm<Inputs>();
   const [show, setShow] = React.useState(false);
 
-  const router = useRouter();
-
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
     setShow(true);
     setTimeout(() => {
       setShow(false);
     }, 2000);
+    dispatch(
+      setUser({
+        ...data,
+        isLogged: true,
+      })
+    );
     router.push("/dashboard");
   };
 
@@ -140,7 +158,7 @@ export default function Login() {
       </div>
       <div
         className="
-      flex  items-center justify-center  flex-2 mt-5 md:mt-0   bg-[#FAFAFA] md:h-screen
+      hidden md:flex  items-center justify-center  flex-2 mt-5 md:mt-0   bg-[#FAFAFA] md:h-screen
       "
       >
         <Image

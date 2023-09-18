@@ -1,16 +1,20 @@
+"use client";
 import Link from "next/link";
 import React from "react";
-
+import { usePathname } from "next/navigation";
 type Props = {
   title: string;
   icon: React.ReactNode;
-  active?: boolean;
+
+  path: string;
 };
 
-export default function CardNavigation({ title, icon, active }: Props) {
+export default function CardNavigation({ title, icon, path }: Props) {
+  const active = usePathname() === path;
+  console.log("path", active);
   return (
     <Link
-      href={"/dashboard"}
+      href={path}
       className={`
     flex  items-center gap-3 w-full h-14 
     ${active ? "bg-[#F7F7F8]" : "bg-white"}

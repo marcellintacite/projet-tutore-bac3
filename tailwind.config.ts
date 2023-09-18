@@ -19,9 +19,16 @@ const config: Config = {
           100: "#5D58F2",
           200: "#605BFF",
         },
+        secondary: {
+          50: "#5B93FF",
+          100: "#5B93FF",
+        },
       },
     },
   },
-  plugins: [],
+  daisyui: {
+    themes: ["light", "dark", "cupcake"],
+  },
+  plugins: [require("daisyui")],
 };
 export default config;

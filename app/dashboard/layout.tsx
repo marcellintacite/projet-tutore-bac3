@@ -1,4 +1,5 @@
 import Sidebar from "@/components/Sidebar";
+
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,9 +14,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="flex relative bg-[#FAFAFB]">
+    <main className="flex relative pb-56" data-theme="cupcake">
       <Sidebar />
-      <div className="w-4/5 h-screen">{children}</div>
+
+      <div className="flex-1 min-h-screen md:px-4 mt-2">{children}</div>
     </main>
   );
 }
