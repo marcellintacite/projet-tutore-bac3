@@ -10,6 +10,10 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { storeType } from "@/types/store";
 import { setUser } from "@/data/reducers/userReducer";
+import axios from "axios";
+import { Toaster, toast } from "react-hot-toast";
+import jwt_decode from "jwt-decode";
+import axiosCon from "@/libs/Axios";
 
 type Inputs = {
   username: string;
@@ -22,9 +26,10 @@ export default function Login() {
   const router = useRouter();
 
   useEffect(() => {
-    if (isLogged) {
+    if (sessionStorage.getItem("access")) {
       router.push("/dashboard");
     }
+    console.log(sessionStorage.getItem("access"));
   });
 
   const dispatch = useDispatch();
@@ -39,20 +44,54 @@ export default function Login() {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data);
     setShow(true);
-    setTimeout(() => {
-      setShow(false);
-    }, 2000);
-    dispatch(
-      setUser({
-        ...data,
-        isLogged: true,
+    const url = "/user/login_user";
+    axiosCon
+      .post(url, {
+        username: data.username,
+        password: data.password,
       })
-    );
-    router.push("/dashboard");
+      .then((res: any) => {
+        console.log(res);
+        console.log(res.data.access);
+        window.sessionStorage.setItem("access", res.data.access);
+        dispatch(
+          setUser({
+            username: data.username,
+            isLogged: true,
+            userRole: res.data.user_type,
+          })
+        );
+        setShow(false);
+        router.push("/dashboard");
+      })
+      .catch((e: any) => {
+        console.log(e);
+        toast.error("Il y a une erreur");
+        dispatch(
+          setUser({
+            username: data.username,
+            isLogged: true,
+          })
+        );
+        setShow(false);
+        // router.push("/dashboard");
+        // setShow(false);
+      });
+    // setTimeout(() => {
+    //   setShow(false);
+    // }, 2000);
+    // dispatch(
+    //   setUser({
+    //     ...data,
+    //     isLogged: true,
+    //   })
+    // );
+    // router.push("/dashboard");
   };
 
   return (
     <main className="flex flex-col md:flex-row pt-3 md:pt-0 items-center justify-center w-full min-h-screen">
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="flex flex-col  items-center justify-center min-h-screen md:w-3/5 w-11/12">
         <div
           className="
@@ -85,14 +124,14 @@ export default function Login() {
                 ...register("username", {
                   required: "Ce champ est requis",
                   minLength: {
-                    value: 8,
+                    value: 4,
                     message:
-                      "Le nom d'utilisateur doit contenir au moins 8 caractères",
+                      "Le nom d'utilisateur doit contenir au moins 4 caractères",
                   },
                   maxLength: {
-                    value: 20,
+                    value: 16,
                     message:
-                      "Le nom d'utilisateur doit contenir au plus 20 caractères",
+                      "Le nom d'utilisateur doit contenir au plus 9 caractères",
                   },
                 }),
               }}
@@ -120,7 +159,7 @@ export default function Login() {
                 ...register("password", {
                   required: "Ce champ est requis",
                   minLength: {
-                    value: 8,
+                    value: 3,
                     message:
                       "Le mot de passe doit contenir au moins 8 caractères",
                   },

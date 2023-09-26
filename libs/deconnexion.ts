@@ -7,5 +7,7 @@ const paramType = {
 export default function deconnexion({ navigation, dispatch }: any) {
   console.log(navigation);
   dispatch(removeUser());
+  window.sessionStorage.removeItem("access");
+  console.log("test");
   navigation.push("/");
 }

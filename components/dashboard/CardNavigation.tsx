@@ -11,7 +11,7 @@ type Props = {
 
 export default function CardNavigation({ title, icon, path }: Props) {
   const active = usePathname() === path;
-  console.log("path", active);
+
   return (
     <Link
       href={path}
@@ -22,7 +22,7 @@ export default function CardNavigation({ title, icon, path }: Props) {
     `}
     >
       {icon}
-      <h2 className="hidden lg:block">{title}</h2>
+      <h2 className="hidden text-sm lg:block">{title}</h2>
     </Link>
   );
 }

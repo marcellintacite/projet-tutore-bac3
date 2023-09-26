@@ -30,7 +30,7 @@ export default function Sidebar({}: Props) {
             width={40}
             height={40}
           />
-          <h2 className="hidden md:block text-2xl font-bold">Wazalendo</h2>
+          <h2 className="hidden md:block text-2xl font-bold">Le Citoyen</h2>
         </div>
         <div className=" w-full lg:px-6 flex gap-2 md:flex-col">
           <CardNavigation

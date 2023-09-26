@@ -15,7 +15,7 @@ const userSlice = createSlice({
       state.userId = action.payload.userId;
       state.username = action.payload.username;
       state.email = action.payload.email;
-      state.isLogged = true;
+      state.isLogged = window.sessionStorage.getItem("access") ? true : false;
     },
     removeUser(state) {
       state.userId = "";

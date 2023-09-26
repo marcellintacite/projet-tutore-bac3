@@ -5,6 +5,12 @@ import Table from "@/components/dashboard/Table";
 import UserName from "@/components/dashboard/UserName";
 import { storeType } from "@/types/store";
 import React from "react";
+import {
+  AiFillHeart,
+  AiFillCalendar,
+  AiFillBuild,
+  AiFillFile,
+} from "react-icons/ai";
 import { useSelector } from "react-redux";
 
 type Props = {};
@@ -14,10 +20,26 @@ export default function page({}: Props) {
     <div className="m-auto w-full  mx-3">
       <Navbar name="Dashboard" path={"/dashboard"} />
       <div className="flex-col md:flex-row md:mx-5 flex flex-wrap gap-6 justify-between">
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        <Card
+          lien="/dashboard/acte-de-naissance"
+          icon={<AiFillHeart className="text-3xl text-secondary-100" />}
+          label="Certificar de naissance"
+        />
+        <Card
+          lien="/dashboard/acte-de-deces"
+          icon={<AiFillCalendar className="text-3xl text-yellow-400" />}
+          label="Acte de decès"
+        />
+        <Card
+          lien="/dashboard/certificat-de-naissance"
+          icon={<AiFillBuild className="text-3xl text-gray-900" />}
+          label="Certificat de naissance"
+        />
+        <Card
+          lien="/dashboard/certificat-de-deces"
+          icon={<AiFillFile className="text-3xl text-red-400" />}
+          label="Certificat de decès"
+        />
       </div>
 
       <div className="flex-col md:flex-row  md:mx-5 gap-5 justify-around mt-5 flex">

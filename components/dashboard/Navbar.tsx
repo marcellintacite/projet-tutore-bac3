@@ -19,6 +19,7 @@ export default function Navbar({ name, path }: Props) {
 
   const deconnexion = () => {
     dispatch(removeUser());
+    sessionStorage.clear();
     router.push("/");
   };
 
