@@ -8,7 +8,11 @@ type Props = {};
 export default function page({}: Props) {
   return (
     <section>
-      <Navbar name="Acte de décès" path={"/dashboard/acte-de-deces"} />
+      <Navbar
+        pageRoute="/"
+        name="Acte de décès"
+        path={"/dashboard/acte-de-deces"}
+      />
       <Modal />
       <div>
         <TableReuse />
