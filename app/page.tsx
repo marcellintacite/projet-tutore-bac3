@@ -21,8 +21,6 @@ type Inputs = {
 };
 
 export default function Login() {
-  const { isLogged } = useSelector((store: storeType) => store.user);
-  console.log(isLogged);
   const router = useRouter();
 
   useEffect(() => {
@@ -51,9 +49,10 @@ export default function Login() {
         password: data.password,
       })
       .then((res: any) => {
-        console.log(res);
-        console.log(res.data.access);
+        console.log(res.data.user_type);
+
         window.sessionStorage.setItem("access", res.data.access);
+
         dispatch(
           setUser({
             username: data.username,
@@ -66,7 +65,7 @@ export default function Login() {
       })
       .catch((e: any) => {
         console.log(e);
-        toast.error("Il y a une erreur");
+        toast.error(e.response.data.message);
         dispatch(
           setUser({
             username: data.username,

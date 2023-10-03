@@ -5,7 +5,7 @@ const initialState: userType = {
   userId: "",
   username: "",
   email: "",
-  isLogged: false,
+  userRole: "",
 };
 const userSlice = createSlice({
   name: "user",
@@ -15,13 +15,13 @@ const userSlice = createSlice({
       state.userId = action.payload.userId;
       state.username = action.payload.username;
       state.email = action.payload.email;
-      state.isLogged = window.sessionStorage.getItem("access") ? true : false;
+      state.userRole = action.payload.userRole;
     },
     removeUser(state) {
       state.userId = "";
       state.username = "";
       state.email = "";
-      state.isLogged = false;
+      state.userRole = "";
     },
   },
 });

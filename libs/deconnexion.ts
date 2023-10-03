@@ -11,3 +11,9 @@ export default function deconnexion({ navigation, dispatch }: any) {
   console.log("test");
   navigation.push("/");
 }
+
+export const deconnexionUser = ({ dispatch, router }: any) => {
+  dispatch(removeUser());
+  sessionStorage.clear();
+  router.push("/");
+};

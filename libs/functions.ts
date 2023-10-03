@@ -1,5 +1,6 @@
 import toast from "react-hot-toast";
 import axiosCon from "./Axios";
+import { InputsDeces } from "@/types/dece";
 
 export const getProvice = (setProvinces: any) => {
   axiosCon
@@ -24,5 +25,22 @@ export const getTerritoire = (setTerritoire: any, id: number | 1) => {
     })
     .catch((err) => {
       toast.error("Il y a une erreur avec les provinces");
+    });
+};
+
+export const addDeces = (data: InputsDeces) => {
+  console.log(data);
+  const token = sessionStorage.getItem("access");
+  axiosCon
+    .post("/app/create_certi_desc", {
+      token,
+      new_certidesc: data,
+    })
+    .then((res) => {
+      toast.success("Deces ajouté avec succès");
+    })
+    .catch((err) => {
+      toast.error("Il y a une erreur avec l'ajout du deces");
+      console.log(err);
     });
 };

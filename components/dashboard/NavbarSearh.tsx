@@ -11,22 +11,16 @@ import { removeUser } from "@/data/reducers/userReducer";
 type Props = {
   name: string;
   path: string;
+  pageRoute: string;
 };
 
-export default function Navbar({ name, path }: Props) {
+export default function Navbar({ name, path, pageRoute }: Props) {
   const dispatch = useDispatch();
   const router = useRouter();
 
   const deconnexion = () => {
     dispatch(removeUser());
     router.push("/");
-  };
-
-  const openModal = () => {
-    const model = document.getElementById("my_modal_3") as HTMLDialogElement;
-    if (model) {
-      model.showModal();
-    }
   };
 
   return (
@@ -49,7 +43,7 @@ export default function Navbar({ name, path }: Props) {
         </div>
         <button
           className="btn rounded-md bg-primary-200 text-white hover:bg-blue-800"
-          onClick={openModal}
+          onClick={() => router.push(pageRoute)}
         >
           <AiOutlinePlus className="w-5 h-5 text-gray-100" />
           Ajouter

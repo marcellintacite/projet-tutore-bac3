@@ -1,12 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { AiOutlineUser } from "react-icons/ai";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import deconnexion from "@/libs/deconnexion";
 import { removeUser } from "@/data/reducers/userReducer";
+
+import { storeType } from "@/types/store";
 
 type Props = {
   name: string;
@@ -16,7 +18,17 @@ type Props = {
 export default function Navbar({ name, path }: Props) {
   const dispatch = useDispatch();
   const router = useRouter();
+  const { username, email, userRole } = useSelector(
+    (store: storeType) => store.user
+  );
+  console.log(username, userRole);
 
+  useEffect(() => {
+    if (username === "") {
+      sessionStorage.clear();
+      router.push("/");
+    }
+  }, []);
   const deconnexion = () => {
     dispatch(removeUser());
     sessionStorage.clear();

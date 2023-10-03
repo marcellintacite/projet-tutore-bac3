@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import { FaTimes } from "react-icons/fa";
@@ -8,10 +9,25 @@ import { PiBookOpenTextLight } from "react-icons/pi";
 import { RiShieldCrossLine } from "react-icons/ri";
 import CardNavigation from "./dashboard/CardNavigation";
 import { PiUsersThree, PiUser } from "react-icons/pi";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
+import { removeUser } from "@/data/reducers/userReducer";
+import { storeType } from "@/types/store";
+import logo from "@/public/assets/illustration/jpr.png";
 
 type Props = {};
 
 export default function Sidebar({}: Props) {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { userRole } = useSelector((state: storeType) => state.user);
+
+  const deconnexionUser = () => {
+    dispatch(removeUser());
+    sessionStorage.clear();
+    router.push("/");
+  };
+
   return (
     <aside className="w-1 md:w-1/6 h-screen  flex flex-col justify-between items-center">
       <section
@@ -24,12 +40,7 @@ export default function Sidebar({}: Props) {
         md:flex  justify-center items-center  md:flex-row gap-3 hidden
       "
         >
-          <Image
-            src={require("@/public/assets/Logo.png")}
-            alt="Logo"
-            width={40}
-            height={40}
-          />
+          <Image src={logo} alt="Logo" width={40} height={40} />
           <h2 className="hidden md:block text-2xl font-bold">Le Citoyen</h2>
         </div>
         <div className=" w-full lg:px-6 flex gap-2 md:flex-col">
@@ -38,30 +49,48 @@ export default function Sidebar({}: Props) {
             icon={<RxDashboard size={26} />}
             path="/dashboard"
           />
+          {(userRole === "admin" || userRole === "commune") && (
+            <>
+              <CardNavigation
+                title="Acte de naissance"
+                icon={<HiOutlineClipboardDocumentList size={26} />}
+                path="/dashboard/acte-de-naissance"
+              />
+              <CardNavigation
+                title="Acte de decès"
+                icon={<LiaAddressBook size={26} />}
+                path="/dashboard/acte-de-deces"
+              />
+            </>
+          )}
+
+          {(userRole === "hopital" || userRole === "admin") && (
+            <>
+              <CardNavigation
+                title="Certificat de décès"
+                icon={<RiShieldCrossLine size={26} />}
+                path="/dashboard/certificat-de-deces"
+              />
+              <CardNavigation
+                title="Certificat naissance"
+                icon={<PiBookOpenTextLight size={26} />}
+                path="/dashboard/certificat-de-naissance"
+              />
+            </>
+          )}
+
+          {userRole === "admin" && (
+            <CardNavigation
+              title="Comptes"
+              icon={<PiUsersThree size={26} />}
+              path="/dashboard/comptes"
+            />
+          )}
+
           <CardNavigation
-            title="Acte de naissance"
-            icon={<HiOutlineClipboardDocumentList size={26} />}
-            path="/dashboard/acte-de-naissance"
-          />
-          <CardNavigation
-            title="Acte de decès"
-            icon={<LiaAddressBook size={26} />}
-            path="/dashboard/acte-de-deces"
-          />
-          <CardNavigation
-            title="Certificat naissance"
-            icon={<PiBookOpenTextLight size={26} />}
-            path="/dashboard/certificat-de-naissance"
-          />
-          <CardNavigation
-            title="Certificat de décès"
-            icon={<RiShieldCrossLine size={26} />}
-            path="/dashboard/certificat-de-deces"
-          />
-          <CardNavigation
-            title="Comptes"
-            icon={<PiUsersThree size={26} />}
-            path="/dashboard/comptes"
+            title="Profile"
+            icon={<PiUser size={26} />}
+            path="/dashboard/profile/id"
           />
         </div>
         <footer className="md:flex w-full  px-4 py-4 justify-center lg:justify-between items-center lg:bg-slate-50 bg-red-100 hidden">
@@ -77,7 +106,7 @@ export default function Sidebar({}: Props) {
             <p>Administrateur</p>
           </div>
           <div>
-            <button>
+            <button onClick={deconnexionUser}>
               <LiaSignOutAltSolid size={26} />
             </button>
           </div>
