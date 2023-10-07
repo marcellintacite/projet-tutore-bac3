@@ -1,5 +1,5 @@
 "use client";
-import CustomInput from "@/app/dashboard/certificat-de-naissance/components/Input";
+import CustomInput from "../../../certificat-de-naissance/components/Input";
 import { addDeces } from "@/libs/functions";
 import { InputsDeces } from "@/types/dece";
 import React from "react";

@@ -265,23 +265,7 @@ const AddForm = (props: Props) => {
                       })}
                     />
                   </div>
-                  <div className="form-control w-full">
-                    <label className="label">
-                      <span className="label-text">
-                        Nom complet de la mère :
-                      </span>
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Nzigire Nsimire"
-                      required
-                      className="input input-bordered rounded-md w-full "
-                      {...register("nom_complet_mere", {
-                        required: "Ce champ est requis",
-                        minLength: 4,
-                      })}
-                    />
-                  </div>
+
                   <div className="mt-3 flex gap-3">
                     <button
                       className="btn-ghost btn rounded-md mt-4"

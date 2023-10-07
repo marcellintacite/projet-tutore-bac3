@@ -49,9 +49,10 @@ export default function Login() {
         password: data.password,
       })
       .then((res: any) => {
-        console.log(res.data.user_type);
+        // console.log(res);
 
         window.sessionStorage.setItem("access", res.data.access);
+        window.sessionStorage.setItem("userId", res.data.user_id);
 
         dispatch(
           setUser({
@@ -98,7 +99,7 @@ export default function Login() {
         "
         >
           <Image
-            src={require("@/public/assets/Logo.png")}
+            src={require("@/public/assets/illustration/jpr.png")}
             alt="Logo"
             className="w-20 h-20"
           />

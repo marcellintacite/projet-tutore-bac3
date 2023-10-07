@@ -32,8 +32,8 @@ export default function Sidebar({}: Props) {
     <aside className="w-1 md:w-1/6 h-screen  flex flex-col justify-between items-center">
       <section
         className="
-        flex md:flex-col justify-between  items-center bg-white gap-6 md:gap-3 fixed md:top-0 md:w-1/6 h-16 md:h-screen w-full pt-5  z-50 left-0 bottom-0 px-4 md:px-0
-        "
+        flex md:flex-col justify-between  items-center bg-white gap-6 md:gap-3 fixed md:top-0 md:w-1/6 h-20 md:h-screen w-full pt-5  z-[1000] left-0 bottom-0 px-4 md:px-0
+        py-3"
       >
         <div
           className="

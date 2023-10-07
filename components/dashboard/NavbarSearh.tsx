@@ -34,13 +34,6 @@ export default function Navbar({ name, path, pageRoute }: Props) {
         </Link>
       </div>
       <div className="flex gap-3">
-        <div className="form-control">
-          <input
-            type="text"
-            placeholder="Chercher ..."
-            className="input input-bordered border-slate-100 rounded-md bg-white w-full max-w-xs"
-          />
-        </div>
         <button
           className="btn rounded-md bg-primary-200 text-white hover:bg-blue-800"
           onClick={() => router.push(pageRoute)}

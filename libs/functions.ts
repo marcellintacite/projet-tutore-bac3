@@ -22,9 +22,11 @@ export const getTerritoire = (setTerritoire: any, id: number | 1) => {
     .get(`/app/get_territoire_par_province/${id}`)
     .then((res) => {
       setTerritoire(res.data);
+      console.log(res);
     })
     .catch((err) => {
       toast.error("Il y a une erreur avec les provinces");
+      console.log(err);
     });
 };
 
@@ -38,6 +40,7 @@ export const addDeces = (data: InputsDeces) => {
     })
     .then((res) => {
       toast.success("Deces ajouté avec succès");
+      console.log(res);
     })
     .catch((err) => {
       toast.error("Il y a une erreur avec l'ajout du deces");
