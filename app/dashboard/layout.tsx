@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Application pour rationaliser les données entre hopitaux et etat civil",
 };
-export const dynamic = "force-dynamic";
+
 export default function RootLayout({
   children,
 }: {

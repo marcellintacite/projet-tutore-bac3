@@ -14,8 +14,6 @@ import {
 import logo from "../../../../../public/assets/illustration/jpr.png";
 
 const Quixote = ({ data, adress }: { data: any; adress: any }) => {
-  console.log(adress);
-
   const dateOption = {
     weekday: "long",
     year: "numeric",

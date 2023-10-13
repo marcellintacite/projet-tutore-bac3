@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { use } from "react";
 import { FaTimes } from "react-icons/fa";
 import { RxDashboard } from "react-icons/rx";
 import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
@@ -20,7 +20,8 @@ type Props = {};
 export default function Sidebar({}: Props) {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { userRole } = useSelector((state: storeType) => state.user);
+  const { userRole, username } = useSelector((state: storeType) => state.user);
+  console.log(username);
 
   const deconnexionUser = () => {
     dispatch(removeUser());
@@ -102,10 +103,8 @@ export default function Sidebar({}: Props) {
            flex-col items-center gap-1 hidden lg:flex
           "
           >
-            <h2 className="font-bold text-lg">
-              {sessionStorage.getItem("username")?.toLocaleUpperCase()}
-            </h2>
-            <p>{sessionStorage.getItem("user_type")}</p>
+            <h2 className="font-bold text-lg">{username}</h2>
+            <p>{userRole}</p>
           </div>
           <div>
             <button onClick={deconnexionUser}>

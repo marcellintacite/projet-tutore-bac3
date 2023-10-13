@@ -9,7 +9,6 @@ type Props = {
 };
 
 export default function DocContent({ data, adress }: Props) {
-  console.log(data);
   return (
     <PDFViewer className="w-full h-screen">
       <Quixote data={data} adress={adress} />

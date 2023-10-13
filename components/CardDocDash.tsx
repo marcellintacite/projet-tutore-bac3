@@ -10,7 +10,7 @@ type Props = {
 
 export default function CardDocDash({ certificat }: Props) {
   return (
-    <div className="card card-compact w-48 bg-slate-50 overflow-hidden">
+    <div className="card card-compact w-full md:w-48 bg-slate-50 overflow-hidden">
       <div
         className="
         w-full

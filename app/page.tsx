@@ -8,11 +8,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import ErrorInput from "@/components/login/Errors";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { storeType } from "@/types/store";
+
 import { setUser } from "@/data/reducers/userReducer";
-import axios from "axios";
+
 import { Toaster, toast } from "react-hot-toast";
-import jwt_decode from "jwt-decode";
+
 import axiosCon from "@/libs/Axios";
 
 type Inputs = {

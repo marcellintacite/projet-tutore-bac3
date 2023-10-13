@@ -4,11 +4,10 @@ import justice from "@/public/assets/illustration/jpr.png";
 import Image from "next/image";
 import { notFound, useRouter } from "next/navigation";
 import { certificatDbType } from "@/types/certi";
-import CardInfo from "@/components/dashboard/CardInfo";
 
 import DocContent from "./DocContent";
 import Link from "next/link";
-export const dynamic = "force-dynamic";
+
 type Props = {
   params: {
     id: number;
@@ -49,9 +48,12 @@ export default async function page({ params, searchParams }: Props) {
   }
   return (
     <div className="md:mx-32 mt-4  h-screen">
+      <h2 className="my-3 text-3xl font-bold">
+        Certificat de {certData.nom_enfant} {certData.post_nom_enfant}
+      </h2>
       <DocContent data={certData} adress={adresse} />
 
-      <div className="mt-7">
+      <div className="mt-7 pb-6">
         <Link
           href={`/dashboard/certificat-de-naissance/`}
           className="btn btn-info"
