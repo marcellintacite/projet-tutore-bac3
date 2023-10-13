@@ -7,6 +7,7 @@ import { certificatDbType } from "@/types/certi";
 import CardInfo from "@/components/dashboard/CardInfo";
 
 import DocContent from "./DocContent";
+import Link from "next/link";
 
 type Props = {
   params: {
@@ -49,6 +50,15 @@ export default async function page({ params, searchParams }: Props) {
   return (
     <div className="md:mx-32 mt-4  h-screen">
       <DocContent data={certData} adress={adresse} />
+
+      <div className="mt-7">
+        <Link
+          href={`/dashboard/certificat-de-naissance/`}
+          className="btn btn-info"
+        >
+          Retourner
+        </Link>
+      </div>
     </div>
   );
 }
