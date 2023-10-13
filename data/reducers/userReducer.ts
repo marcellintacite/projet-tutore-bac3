@@ -3,9 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: userType = {
   userId: "",
-  username: sessionStorage.getItem("username") || "",
+  username: "",
   email: "",
-  userRole: sessionStorage.getItem("user_type") || "",
+  userRole: "",
 };
 const userSlice = createSlice({
   name: "user",
