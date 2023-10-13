@@ -4,6 +4,7 @@ import React from "react";
 import Modal from "../../components/Modal";
 
 type Props = {};
+export const dynamic = "force-dynamic";
 
 export default function page({}: Props) {
   return (

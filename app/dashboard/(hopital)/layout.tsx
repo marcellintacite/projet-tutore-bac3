@@ -6,7 +6,7 @@ import { storeType } from "@/types/store";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { removeUser } from "@/data/reducers/userReducer";
-
+export const dynamic = "force-dynamic";
 type Props = {
   children: ReactNode;
 };
