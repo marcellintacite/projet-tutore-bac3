@@ -52,7 +52,17 @@ export default function Login() {
         // console.log(res);
 
         window.sessionStorage.setItem("access", res.data.access);
-        window.sessionStorage.setItem("userId", res.data.user_id);
+
+        axiosCon
+          .get(`/user/get_user_id/${res.data.user_id}`)
+          .then((rs) => {
+            window.sessionStorage.setItem("username", rs.data.username);
+            window.sessionStorage.setItem("user_type", res.data.user_type);
+          })
+          .catch((e) => {
+            sessionStorage.clear();
+            window.location.reload();
+          });
 
         dispatch(
           setUser({

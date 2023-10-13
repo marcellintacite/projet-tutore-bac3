@@ -90,7 +90,7 @@ export default function Sidebar({}: Props) {
           <CardNavigation
             title="Profile"
             icon={<PiUser size={26} />}
-            path="/dashboard/profile/id"
+            path="/dashboard/profile"
           />
         </div>
         <footer className="md:flex w-full  px-4 py-4 justify-center lg:justify-between items-center lg:bg-slate-50 bg-red-100 hidden">
@@ -102,8 +102,10 @@ export default function Sidebar({}: Props) {
            flex-col items-center gap-1 hidden lg:flex
           "
           >
-            <h2 className="font-bold text-lg">Tacite bahiga</h2>
-            <p>Administrateur</p>
+            <h2 className="font-bold text-lg">
+              {sessionStorage.getItem("username")?.toLocaleUpperCase()}
+            </h2>
+            <p>{sessionStorage.getItem("user_type")}</p>
           </div>
           <div>
             <button onClick={deconnexionUser}>

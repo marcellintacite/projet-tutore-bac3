@@ -1,3 +1,4 @@
+"use client";
 import Card from "@/components/dashboard/Card";
 import Chart from "@/components/dashboard/Chart";
 import Navbar from "@/components/dashboard/Navbar";
@@ -11,7 +12,6 @@ import {
   AiFillBuild,
   AiFillFile,
 } from "react-icons/ai";
-import { useSelector } from "react-redux";
 
 type Props = {};
 
@@ -19,7 +19,7 @@ export default function page({}: Props) {
   return (
     <div className="m-auto w-full  mx-3">
       <Navbar name="Dashboard" path={"/dashboard"} />
-      <div className="flex-col md:flex-row md:mx-5 flex flex-wrap gap-6 justify-between">
+      <div className="flex-col md:flex-row md:mx-5 flex flex-wrap gap-6 justify-start p-3 w-[95%] md:w-full">
         <Card
           lien="/dashboard/acte-de-naissance"
           icon={<AiFillHeart className="text-3xl text-secondary-100" />}
@@ -43,11 +43,11 @@ export default function page({}: Props) {
       </div>
 
       <div className="flex-col md:flex-row  md:mx-5 gap-5 justify-around mt-5 flex">
-        <div className="flex-1 ">
+        <div className="md:flex-1 w-[95%]">
           <h1 className="text-2xl font-bold">Liste des documents recents</h1>
           <Table />
         </div>
-        <div className="w-4/5 md:w-2/5 bg-white rounded-lg p-4">
+        <div className="w-4/5 md:w-2/5 bg-white rounded-lg p-4 m-auto">
           <h1 className="text-2xl font-bold">Nombre d'opérations</h1>
           <Chart />
         </div>

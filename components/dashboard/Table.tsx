@@ -1,54 +1,41 @@
+"use client";
 import React from "react";
 import { AiFillEye, AiOutlineEdit } from "react-icons/ai";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import axiosCon from "@/libs/Axios";
+import { notFound } from "next/navigation";
+import CardDoc from "../CardDoc";
+import { certificatDbType } from "@/types/certi";
+import CardDocDash from "../CardDocDash";
 
 type Props = {};
 
+const getTable = async () => {
+  const token = sessionStorage.getItem("access");
+  const res = await axiosCon.get(`/app/get_cn_per_hosp/${token}`);
+  return res.data;
+};
+
 export default function Table({}: Props) {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["cn_hospital"],
+    queryFn: getTable,
+  });
+
+  if (isLoading)
+    return (
+      <div className="w-full flex justify-center items-center pb-7 mt-5">
+        <span className="loading loading-spinner text-primary"></span>
+      </div>
+    );
+
+  if (error) return notFound();
+  const dataShow = data?.slice(0, 5);
   return (
-    <div className="overflow-x-auto bg-white w-full rounded-md">
-      <table className="table">
-        {/* head */}
-        <thead>
-          <tr>
-            <th className="font-bold"></th>
-            <th className="font-bold text-">Nom</th>
-            <th className="font-bold text-lg">Document</th>
-            <th className="font-bold text-lg">Date d'émission</th>
-            <th className="font-bold text-lg">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {/* row 1 */}
-          <tr className="">
-            <th>1</th>
-            <td>Cy Ganderton</td>
-            <td>Quality Control Specialist</td>
-            <td>Quality Control Specialist</td>
-            <td className="flex gap-3">
-              <button className="btn btn-square bg-slate-50">
-                <AiFillEye className="w-5 h-5 text-secondary-50" />
-              </button>
-              <button className="btn btn-square bg-slate-50">
-                <AiOutlineEdit className="w-5 h-5 text-warning font-bold" />
-              </button>
-            </td>
-          </tr>
-          {/* row 2 */}
-          <tr>
-            <th>2</th>
-            <td>Hart Hagerty</td>
-            <td>Desktop Support Technician</td>
-            <td>Purple</td>
-          </tr>
-          {/* row 3 */}
-          <tr>
-            <th>3</th>
-            <td>Brice Swyre</td>
-            <td>Tax Accountant</td>
-            <td>Red</td>
-          </tr>
-        </tbody>
-      </table>
+    <div className="overflow-x-auto bg-white w-full rounded-md flex flex-wrap gap-5 p-4 justify-center items-center">
+      {dataShow.map((d: certificatDbType) => (
+        <CardDocDash key={d.id} certificat={d} />
+      ))}
     </div>
   );
 }

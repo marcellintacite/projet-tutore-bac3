@@ -6,7 +6,6 @@ import Link from "next/link";
 import React, { useState } from "react";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import CardDoc from "./CardDoc";
 
 type Props = {};
 
@@ -51,7 +50,7 @@ export default function TableReuse({}: Props) {
     }
   };
   return (
-    <div className="overflow-x-auto bg-white h-screen">
+    <div className="overflow-x-auto bg-white">
       <div className="flex justify-end mt-4 mx-3">
         <form className="form-control">
           <input
@@ -67,16 +66,66 @@ export default function TableReuse({}: Props) {
           <span className="loading loading-spinner text-primary"></span>
         </div>
       )}
-      <div
-        className="
-      flex flex-wrap gap-5 p-4 mt-4 items-center justify-center
-    "
-      >
-        {!isLoading &&
-          data.map((c: certificatDbType) => (
-            <CardDoc key={c.id} certificat={c} />
-          ))}
-      </div>
+
+      {!isLoading && (
+        <table className="table">
+          {/* head */}
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Nom</th>
+              <th>Date du certificat</th>
+              <th>Sexe</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {/* row 1 */}
+
+            {data.map((cert: any) => (
+              <tr key={cert.id}>
+                <th>
+                  <label>{cert.id}</label>
+                </th>
+                <td>
+                  <div className="flex items-center space-x-3">
+                    <div>
+                      <div className="font-bold">
+                        <Link
+                          href={{
+                            pathname: `/dashboard/certificat-de-naissance/${cert.id}`,
+                            query: { token: sessionStorage.getItem("access") },
+                          }}
+                          className="text-blue-950 underline"
+                        >
+                          {cert.nom_enfant} {cert.post_nom_enfant}{" "}
+                          {cert.prenom_enfant}
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>{cert.date_deliv_cert}</td>
+                <td>{cert.sexe_enfant}</td>
+                <th>
+                  <button className="btn btn-ghost btn-xs">details</button>
+                </th>
+              </tr>
+            ))}
+          </tbody>
+          {/* foot */}
+          <tfoot>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Job</th>
+              <th>Favorite Color</th>
+              <th></th>
+            </tr>
+          </tfoot>
+        </table>
+      )}
     </div>
   );
 }
