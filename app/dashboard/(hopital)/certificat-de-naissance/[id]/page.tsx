@@ -8,7 +8,7 @@ import CardInfo from "@/components/dashboard/CardInfo";
 
 import DocContent from "./DocContent";
 import Link from "next/link";
-
+export const dynamic = "force-dynamic";
 type Props = {
   params: {
     id: number;

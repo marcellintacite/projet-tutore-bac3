@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Toaster } from "react-hot-toast";
 
 type Props = {};
+export const dynamic = "force-dynamic";
 
 export default function page({}: Props) {
   return (
