@@ -5,7 +5,7 @@ type Props = {};
 export default function page({}: Props) {
   return (
     <main className="flex justify-center items-center ">
-      <div className="mt-5 w-[500px] bg-white rounded-md flex flex-col justify-center items-center p-3">
+      <div className="mt-5 w-4/5 md:w-[500px] bg-white rounded-md flex flex-col justify-center items-center p-3">
         <h2 className="text-blue-950 text-3xl text-center font-bold">Profil</h2>
         <div className="w-32 h-32 border-2 mt-3 rounded-full flex justify-center items-center">
           <AiOutlineUser size={50} />

@@ -11,7 +11,7 @@ type Props = {
 export default function CardDoc({ certificat }: Props) {
   console.log(certificat);
   return (
-    <div className="card card-compact w-full md:w-96 bg-slate-50 overflow-hidden">
+    <div className="card card-compact w-full md:w-64 bg-slate-50 overflow-hidden">
       <div
         className="
         w-full
