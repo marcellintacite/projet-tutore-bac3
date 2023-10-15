@@ -43,7 +43,7 @@ export default function page({}: Props) {
             <Card
               lien="/dashboard/acte-de-naissance"
               icon={<AiFillHeart className="text-3xl text-secondary-100" />}
-              label="Certificar de naissance"
+              label="Acte de naissance"
             />
 
             <Card
