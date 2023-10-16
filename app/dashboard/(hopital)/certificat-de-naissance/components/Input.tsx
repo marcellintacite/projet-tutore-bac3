@@ -15,13 +15,13 @@ const CustomInput = (props: Props) => {
         <span className="label-text">{props.label}</span>
       </label>
       <input
-        type="text"
+        type={props.type || "text"}
         placeholder={props.placeholder}
         required
         className="input input-bordered rounded-md w-full "
         {...props.register(props.name, {
           required: "Ce champ est requis",
-          minLength: 2,
+          minLength: 1,
         })}
       />
     </div>

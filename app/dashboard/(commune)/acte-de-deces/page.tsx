@@ -9,7 +9,7 @@ export default function page({}: Props) {
   return (
     <section>
       <Navbar
-        pageRoute="/"
+        pageRoute="/dashboard/acte-de-deces/nouvel-acte-deces"
         name="Acte de décès"
         path={"/dashboard/acte-de-deces"}
       />

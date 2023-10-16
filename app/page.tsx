@@ -9,7 +9,7 @@ import ErrorInput from "@/components/login/Errors";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setUser } from "@/data/reducers/userReducer";
+import { setUser, setUserid } from "@/data/reducers/userReducer";
 
 import { Toaster, toast } from "react-hot-toast";
 
@@ -69,6 +69,7 @@ export default function Login() {
             username: data.username,
             isLogged: true,
             userRole: res.data.user_type,
+            userId: res.data.user_id,
           })
         );
         setShow(false);

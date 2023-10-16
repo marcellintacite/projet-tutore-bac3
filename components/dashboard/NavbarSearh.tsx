@@ -12,9 +12,10 @@ type Props = {
   name: string;
   path: string;
   pageRoute: string;
+  show?: boolean;
 };
 
-export default function Navbar({ name, path, pageRoute }: Props) {
+export default function Navbar({ name, path, pageRoute, show }: Props) {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -34,13 +35,15 @@ export default function Navbar({ name, path, pageRoute }: Props) {
         </Link>
       </div>
       <div className="flex gap-3">
-        <button
-          className="btn rounded-md bg-primary-200 text-white hover:bg-blue-800"
-          onClick={() => router.push(pageRoute)}
-        >
-          <AiOutlinePlus className="w-5 h-5 text-gray-100" />
-          Ajouter
-        </button>
+        {!show ? (
+          <button
+            className="btn rounded-md bg-primary-200 text-white hover:bg-blue-800"
+            onClick={() => router.push(pageRoute)}
+          >
+            <AiOutlinePlus className="w-5 h-5 text-gray-100" />
+            Ajouter
+          </button>
+        ) : null}
       </div>
     </div>
   );

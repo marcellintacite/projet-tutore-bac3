@@ -62,7 +62,7 @@ export default function TableReuse({}: Props) {
           />
         </form>
       </div>
-      {isLoading && (
+      {isLoading && data && (
         <div className="w-full flex justify-center items-center pb-7 mt-5">
           <span className="loading loading-spinner text-primary"></span>
         </div>
@@ -77,6 +77,16 @@ export default function TableReuse({}: Props) {
             <CardDoc key={c.id} certificat={c} />
           ))}
       </div>
+
+      {
+        data.length === 0 && (
+          <div className="flex justify-center items-center h-96">
+            <p className="text-xl text-gray-500">
+              Aucun document n'a été trouvé
+            </p>
+          </div>
+        ) // <div className="flex justify-center items-center h-96">
+      }
     </div>
   );
 }
