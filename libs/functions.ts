@@ -30,20 +30,24 @@ export const getTerritoire = (setTerritoire: any, id: number | 1) => {
     });
 };
 
-export const addDeces = (data: InputsDeces) => {
+export const addDeces = (data: InputsDeces, show: boolean, setShow: any) => {
   console.log(data);
+  setShow(true);
   const token = sessionStorage.getItem("access");
+  console.log(data);
   axiosCon
-    .post("/app/create_certi_desc", {
+    .post("/app/create_certi_desc/", {
       token,
       new_certidesc: data,
     })
     .then((res) => {
       toast.success("Deces ajouté avec succès");
       console.log(res);
+      setShow(false);
     })
     .catch((err) => {
       toast.error("Il y a une erreur avec l'ajout du deces");
       console.log(err);
+      setShow(false);
     });
 };

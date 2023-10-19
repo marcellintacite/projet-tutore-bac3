@@ -7,6 +7,8 @@ import React, { useState } from "react";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import CardDoc from "@/components/CardDoc";
+import CardDece from "./CardDece";
+import { InputsDeces } from "@/types/dece";
 
 type Props = {};
 
@@ -23,7 +25,7 @@ export default function TableDeces({}: Props) {
 
   // Queries
   const { data, error, isLoading } = useQuery({
-    queryKey: ["cn_hospital"],
+    queryKey: ["cn_deces"],
     queryFn: getTable,
   });
 
@@ -73,9 +75,7 @@ export default function TableDeces({}: Props) {
     "
       >
         {!isLoading &&
-          data.map((c: certificatDbType) => (
-            <CardDoc key={c.id} certificat={c} />
-          ))}
+          data.map((c: InputsDeces) => <CardDece key={c.id} certificat={c} />)}
         {data.length === 0 && (
           <div className="w-full flex justify-center items-center pb-7 mt-5">
             <p className="text-2xl text-gray-400">

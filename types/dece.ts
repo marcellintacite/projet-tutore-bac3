@@ -5,4 +5,5 @@ export type InputsDeces = {
   postnom_defunt: string;
   sexe_defunt: string;
   cause_desc: string;
+  id?: number;
 };
