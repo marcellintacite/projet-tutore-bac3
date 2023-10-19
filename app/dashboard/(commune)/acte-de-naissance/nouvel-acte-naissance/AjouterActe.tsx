@@ -34,17 +34,22 @@ export default function AjouterActe({}: Props) {
 
   const onSubmit = (data: InputesActe) => {
     console.log(data);
+    const token = sessionStorage.getItem("access");
+    if (!token) return window.location.reload();
     axiosCon
       .post("/app/create_actenaiss/", {
-        numeros_volume: data.numeros_volume,
-        numeros_folio: data.numeros_folio,
-        nom_declarant: data.nom_declarant,
-        qualite_declarant: data.qualite_declarant,
-        profession_declarant: data.profession_declarant,
-        date_enregistrement: data.date_enregistrement,
-        langue_redaction: data.langue_redaction,
-        certNais_id: data.certNais_id,
-        commune: userId,
+        token,
+        new_actenaiss: {
+          numeros_volume: data.numeros_volume,
+          numeros_folio: data.numeros_folio,
+          nom_declarant: data.nom_declarant,
+          qualite_declarant: data.qualite_declarant,
+          profession_declarant: data.profession_declarant,
+          date_enregistrement: data.date_enregistrement,
+          langue_redaction: data.langue_redaction,
+          certNais_id: data.certNais_id,
+          commune: userId,
+        },
       })
       .then((res) => {
         console.log(res);
