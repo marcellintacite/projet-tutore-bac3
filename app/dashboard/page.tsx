@@ -58,10 +58,12 @@ export default function page({}: Props) {
       <div className="flex-col md:flex-row  md:mx-5 gap-5 justify-around mt-5 flex">
         <div className="md:flex-1 w-[95%]">
           <h1 className="text-2xl font-bold">Liste des documents recents</h1>
-          <Table />
+
+          {userRole === "hopital" || (userRole === "admin" && <Table />)}
         </div>
         <div className="w-4/5 md:w-2/5 bg-white rounded-lg p-4 m-auto">
           <h1 className="text-2xl font-bold">Nombre d'opérations</h1>
+
           <Chart />
         </div>
       </div>

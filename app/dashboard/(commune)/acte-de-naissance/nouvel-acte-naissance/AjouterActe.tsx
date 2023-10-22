@@ -29,6 +29,7 @@ export default function AjouterActe({}: Props) {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<InputesActe>();
 
@@ -37,7 +38,7 @@ export default function AjouterActe({}: Props) {
     const token = sessionStorage.getItem("access");
     if (!token) return window.location.reload();
     axiosCon
-      .post("/app/create_actenaiss/", {
+      .post("/app/create_actenaiss", {
         token,
         new_actenaiss: {
           numeros_volume: data.numeros_volume,
@@ -54,8 +55,9 @@ export default function AjouterActe({}: Props) {
       .then((res) => {
         console.log(res);
         toast.success("Acte de naissance ajouté avec succès");
+        reset();
       })
-      .then((err) => {
+      .catch((err) => {
         console.log(err);
         toast.error("Erreur lors de l'ajout de l'acte de naissance");
       });

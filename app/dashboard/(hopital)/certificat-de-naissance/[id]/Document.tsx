@@ -20,6 +20,7 @@ const Quixote = ({ data, adress }: { data: any; adress: any }) => {
     month: "long",
     day: "numeric",
   };
+  console.log(data);
   return (
     <Document
       title={`
@@ -57,7 +58,7 @@ const Quixote = ({ data, adress }: { data: any; adress: any }) => {
           </View>
         </View>
         <View style={styles.content}>
-          <Text style={styles.sub}>CERTIFICAT DE NAISSANCE</Text>
+          <Text style={styles.sub}>CERTIFICAT DE NAISSANCE No {data.id}</Text>
           <Text style={styles.normal}>
             Je soussigné, Dr. {data.nom_medecin} , directeur de l’Hôpital
             Général de Référence de{" "}

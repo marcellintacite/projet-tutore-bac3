@@ -3,12 +3,13 @@ import { certificatDbType } from "@/types/certi";
 import { IoDocumentText } from "react-icons/io5";
 import React from "react";
 import Link from "next/link";
+import { InputesActe } from "@/types/acteType";
 
 type Props = {
-  certificat: certificatDbType;
+  certificat: InputesActe;
 };
 
-export default function CardDoc({ certificat }: Props) {
+export default function CardDocCommune({ certificat }: Props) {
   return (
     <div className="card card-compact w-full md:w-64 bg-slate-50 overflow-hidden">
       <div
@@ -24,13 +25,13 @@ export default function CardDoc({ certificat }: Props) {
         <IoDocumentText size={80} color="grey" />
       </div>
       <div className="card-body">
-        <h2 className="card-title">
-          {certificat.nom_enfant} {certificat.post_nom_enfant}
-        </h2>
-        <p>Certificat de naissance etabli le {certificat.date_deliv_cert}</p>
+        <h2 className="card-title">ID : {certificat.certNais_id}</h2>
+        <p>
+          Certificat de naissance etabli le {certificat.date_enregistrement}
+        </p>
         <div className="card-actions justify-end">
           <Link
-            href={`/dashboard/certificat-de-naissance/${
+            href={`/dashboard/acte-de-naissance/${
               certificat.id
             }?token=${sessionStorage.getItem("access")}`}
             className="btn btn-primary"

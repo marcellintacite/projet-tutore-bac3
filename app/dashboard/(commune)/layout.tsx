@@ -6,6 +6,7 @@ import { storeType } from "@/types/store";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { removeUser } from "@/data/reducers/userReducer";
+import { Toaster } from "react-hot-toast";
 
 type Props = {
   children: ReactNode;
@@ -39,6 +40,7 @@ export default function layout({ children }: Props) {
         Commune
       </h3>
       {children}
+      <Toaster />
     </main>
   );
 }
