@@ -20,6 +20,7 @@ const Quixote = ({ data, adress }: { data: any; adress: any }) => {
     month: "long",
     day: "numeric",
   };
+  console.log(data);
   return (
     <Document
       title={`
@@ -57,12 +58,12 @@ const Quixote = ({ data, adress }: { data: any; adress: any }) => {
           </View>
         </View>
         <View style={styles.content}>
-          <Text style={styles.sub}>CERTIFICAT DE NAISSANCE</Text>
+          <Text style={styles.sub}>CERTIFICAT DE DECES No {data.id}</Text>
           <Text style={styles.normal}>
-            Je soussigné, Dr. {data.nom_medecin} , directeur de l’Hôpital
-            Général de Référence de{" "}
-            {sessionStorage.getItem("username")?.toUpperCase()} certifie par la
-            présente que la nommée {data.nom_complet_mere};
+            Je soussigné, Dr. {data.nom_medecin} , médecin traitant à l'hopital
+            General de {sessionStorage.getItem("username")?.toUpperCase()},
+            avoir suivi en hospitalisation, Monsieur présente que la nommée{" "}
+            {data.nom_complet_mere};
           </Text>
           <Text style={styles.suite}>
             Femme de {data.nom_complet_pere} a accouché le{" "}

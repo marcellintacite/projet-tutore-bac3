@@ -20,7 +20,7 @@ const Quixote = ({ data, adress }: { data: any; adress: any }) => {
     month: "long",
     day: "numeric",
   };
-  console.log(data);
+
   return (
     <Document
       title={`
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     margin: 12,
     fontSize: 15,
     textAlign: "justify",
-    fontFamily: "Times-Roman",
+    fontFamily: "Oswald",
   },
   image: {
     width: 50,
