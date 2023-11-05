@@ -7,6 +7,7 @@ import { certificatDbType } from "@/types/certi";
 
 import DocContent from "./DocContent";
 import Link from "next/link";
+import BouttonEffacer from "./BouttonEffacer";
 
 type Props = {
   params: {
@@ -19,7 +20,7 @@ async function getData(token: string) {
   // `https://projetutor.onrender.com/app/get_cn_per_hosp/${token}`,
 
   const res = await fetch(
-    `https://projetutor.onrender.com/app/get_cn_per_hosp/${token}`,
+    `http://192.168.100.33:8000/app/get_cn_per_hosp/${token}`,
     {
       next: {
         revalidate: 60,
@@ -39,23 +40,29 @@ async function getData(token: string) {
 }
 
 export default async function page({ params, searchParams }: Props) {
+  console.log(params.id);
   const data = await getData(searchParams.token);
-  const certData: certificatDbType = data[params.id - 1];
+  const certData: certificatDbType = data[params.id];
   // `https://projetutor.onrender.com/app/print_cert/${params.id}`
   const getAdresse = await fetch(
-    `https://projetutor.onrender.com/app/print_cert/${params.id}`
+    `http://192.168.100.33:8000/app/print_cert/${params.id}`
   );
 
   const adresse = await getAdresse.json();
+
+  console.log(adresse);
 
   if (!certData) {
     return notFound;
   }
   return (
     <div className="md:mx-32 mt-4  h-screen">
-      <h2 className="my-3 text-3xl font-bold">
-        Certificat de {certData.nom_enfant} {certData.post_nom_enfant}
-      </h2>
+      <div className="flex justify-between">
+        <h2 className="my-3 text-3xl font-bold">
+          Certificat de {certData.nom_enfant} {certData.post_nom_enfant}
+        </h2>
+        <BouttonEffacer id={params.id} />
+      </div>
       <DocContent data={certData} adress={adresse} />
 
       <div className="mt-7 pb-6">
