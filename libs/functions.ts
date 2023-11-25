@@ -51,3 +51,20 @@ export const addDeces = (data: InputsDeces, show: boolean, setShow: any) => {
       setShow(false);
     });
 };
+
+export const removeActeDeces = (id: number) => {
+  const token = sessionStorage.getItem("access");
+  axiosCon
+    .post("/app/create_certi_desc/", {
+      token,
+      id,
+    })
+    .then((res) => {
+      toast.success("Deces supprimé avec succès");
+      console.log(res);
+    })
+    .catch((err) => {
+      toast.error("Il y a une erreur avec la suppression du deces");
+      console.log(err);
+    });
+};

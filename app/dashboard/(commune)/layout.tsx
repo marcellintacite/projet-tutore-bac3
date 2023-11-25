@@ -21,9 +21,12 @@ export default function layout({ children }: Props) {
 
   console.log(userRole);
 
+  const token = sessionStorage.getItem("access");
   useEffect(() => {
-    if (!userRole) {
+    if (!token) {
+      toast.error("Vous n'avez pas accès");
       router.push("/");
+      dispatch(removeUser);
       sessionStorage.clear();
     }
     if (userRole === "hopital") {

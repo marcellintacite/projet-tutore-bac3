@@ -1,6 +1,7 @@
 "use client";
 
 import axiosCon from "@/libs/Axios";
+import { removeActeDeces } from "@/libs/functions";
 import axios from "axios";
 import React from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -41,24 +42,10 @@ export default function BouttonEffacer({ id }: Props) {
 
 export const Confirmation = ({ id }: Props) => {
   const token = sessionStorage.getItem("access") || "";
-  console.log(id);
+  console.log(id, token);
   const handleRemoveCertificat = () => {
     console.log(id);
-    axiosCon
-      .delete(`/app/print_cert/`, {
-        data: {
-          token,
-          cert_id: id,
-        },
-      })
-      .then((res) => {
-        document.querySelector("dialog")?.close();
-        toast.success("Supprimé avec succès");
-      })
-      .catch((err: any) => {
-        console.log(err);
-        toast.error(err.response?.data?.message);
-      });
+    removeActeDeces(id);
   };
   return (
     <dialog id="confirmation_naissance" className="modal">

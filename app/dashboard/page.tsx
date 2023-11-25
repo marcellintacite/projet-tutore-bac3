@@ -3,6 +3,7 @@ import Card from "@/components/dashboard/Card";
 import Chart from "@/components/dashboard/Chart";
 import Navbar from "@/components/dashboard/Navbar";
 import Table from "@/components/dashboard/Table";
+import TableCommune from "@/components/dashboard/TableCommune";
 import UserName from "@/components/dashboard/UserName";
 import { storeType } from "@/types/store";
 import React from "react";
@@ -61,6 +62,8 @@ export default function page({}: Props) {
 
           {userRole === "hopital" && <Table />}
           {userRole === "admin" && <Table />}
+          {userRole === "commune" && <TableCommune />}
+          {userRole === "admin" && <TableCommune />}
         </div>
         <div className="w-4/5 md:w-2/5 bg-white rounded-lg p-4 m-auto">
           <h1 className="text-2xl font-bold">Nombre d'opérations</h1>

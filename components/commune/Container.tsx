@@ -26,9 +26,11 @@ export default function CertificatNaissance({}: Props) {
 
   // Queries
   const { data, error, isLoading } = useQuery({
-    queryKey: ["cn_hospital"],
+    queryKey: ["cn_commune_acte"],
     queryFn: getTable,
   });
+
+  console.log(data, error, isLoading);
 
   if (isLoading)
     return (
