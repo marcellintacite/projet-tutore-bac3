@@ -12,8 +12,9 @@ import {
   PDFViewer,
 } from "@react-pdf/renderer";
 import logo from "../../../../../public/assets/illustration/jpr.png";
+import { ResponseCertificatDeces } from "@/types/Certificat";
 
-const Quixote = ({ data, adress }: { data: any; adress: any }) => {
+const Quixote = ({ data }: { data: ResponseCertificatDeces }) => {
   const dateOption = {
     weekday: "long",
     year: "numeric",
@@ -24,7 +25,7 @@ const Quixote = ({ data, adress }: { data: any; adress: any }) => {
   return (
     <Document
       title={`
-    certificat de naissance de ${data.nom_enfant} ${data.post_nom_enfant} ${data.prenom_enfant}}    
+    certificat decès de ${data.Certificat.nom_defunt} ${data.Certificat.post_nom_defunt}     
 
     `}
     >
@@ -41,12 +42,14 @@ const Quixote = ({ data, adress }: { data: any; adress: any }) => {
         </View>
 
         <View style={styles.head}>
-          <Text style={styles.title}>
-            HOPITAL GENERAL DE REFERENCE DE{" "}
-            {sessionStorage.getItem("username")?.toUpperCase()}
+          <Text style={styles.title}>REPUBLIQUE DEMOCRATIQUE DU CONGO</Text>
+          <Text style={styles.author}>
+            {data.hospital.denom.toLocaleUpperCase()}
           </Text>
-          <Text style={styles.author}>test@gmail.com</Text>
-          <Text style={styles.author}>BP : 850 , BUKAVU | SUD-KIVU</Text>
+          <Text style={styles.author}>{data.hospital.email}</Text>
+          <Text style={styles.author}>
+            BP {data.hospital.boite_postal} | {data.terriville.denom}
+          </Text>
 
           <View style={styles.absolute}>
             <Image
@@ -58,29 +61,47 @@ const Quixote = ({ data, adress }: { data: any; adress: any }) => {
           </View>
         </View>
         <View style={styles.content}>
-          <Text style={styles.sub}>CERTIFICAT DE DECES No {data.id}</Text>
+          <Text style={styles.sub}>
+            CERTIFICAT DE DECES No {data.Certificat.id}
+          </Text>
           <Text style={styles.normal}>
-            Je soussigné, Dr. {data.nom_medecin} , médecin traitant à l'hopital
-            General de {sessionStorage.getItem("username")?.toUpperCase()},
-            avoir suivi en hospitalisation, Monsieur présente que la nommée{" "}
-            {data.nom_complet_mere};
+            Je soussigné, Dr. {data.Certificat.medecin_traitant} , médecin
+            traitant à l'hopital de {data.hospital.denom} , avoir suivi en
+            hospitalisation,{" "}
+            {data.Certificat.sexe_defunt === "m" ? "Monsieur" : "Madame"}{" "}
+            {data.Certificat.nom_defunt} {data.Certificat.post_nom_defunt}{" "}
+            agé(e) de{" "}
+            {new Date().getFullYear() -
+              new Date(
+                data.Certificat.date_naissance_defunt
+              ).getFullYear()}{" "}
+            ans et qui résidait à {data.terriville.denom}{" "}
           </Text>
           <Text style={styles.suite}>
-            Femme de {data.nom_complet_pere} a accouché le{" "}
-            {new Date(data.date_nais_enfant).toLocaleDateString()} d’un enfant
-            de sexe {data.sexe_enfant === "m" ? "masculin" : "feminin"} pesant{" "}
-            {data.poid_enfant}g ayant pour nom {data.nom_enfant}{" "}
-            {data.post_nom_enfant} {data.prenom_enfant}.
+            Il est décédé en date du{" "}
+            {new Date(data.Certificat.date_desc).toLocaleDateString("fr-FR", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}{" "}
+            suite à {data.Certificat.cause_desc}.
+          </Text>
+          <Text style={styles.suite}>
+            Le présent certificat est délivré à l'intéressé pour servir et
+            valoir ce que de droit.
           </Text>
         </View>
         <View style={styles.footer}>
           <Text style={styles.normal}>
             Fait à Bukavu, le{" "}
-            {new Date(data.date_deliv_cert).toLocaleDateString("fr-FR", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
+            {new Date(data.Certificat.date_deliv_cert).toLocaleDateString(
+              "fr-FR",
+              {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              }
+            )}
           </Text>
 
           <View style={styles.sceau}>
@@ -88,9 +109,20 @@ const Quixote = ({ data, adress }: { data: any; adress: any }) => {
             <Text style={styles.normalBold}>Signature</Text>
           </View>
         </View>
+        {data.Certificat.url_qrcode && (
+          <View style={styles.code}>
+            <View style={styles.imgContainer}>
+              <Text style={styles.normalBold}>Code QR</Text>
+              <Image
+                style={styles.imageQrcode}
+                source={`https://projetutor.onrender.com${data.Certificat.url_qrcode}`}
+              />
+            </View>
+          </View>
+        )}
         <View style={styles.foot}>
           <Text style={styles.header} fixed>
-            ~ Certificat de naissance~
+            ~ Certificat de décès ~
           </Text>
         </View>
       </Page>
@@ -137,6 +169,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Oswald",
     marginBottom: 20,
+    textDecoration: "underline",
   },
   head: {
     position: "relative",
@@ -225,6 +258,30 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: "#eaf4ff",
     padding: 10,
+  },
+  imgContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    marginTop: 10,
+    padding: 10,
+    border: "1px solid #000",
+    borderRadius: 5,
+    width: 200,
+  },
+  imageQrcode: {
+    width: 100,
+    height: 100,
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  code: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    marginTop: 25,
   },
 });
 

@@ -91,6 +91,21 @@ export default function AddDece({}: Props) {
           type="text"
         />
 
+        <CustomInput
+          register={register}
+          name="date_desc"
+          label="Date du décès"
+          placeholder="Date du décès"
+          type="date"
+        />
+        <CustomInput
+          register={register}
+          name="date_naissance_defunt"
+          label="Date de naissance du défunt"
+          placeholder="Date de naissance du défunt"
+          type="date"
+        />
+
         <div className="mt-3 flex justify-end">
           <button className="btn btn-primary rounded-md">
             {!show ? (

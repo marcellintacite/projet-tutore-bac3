@@ -1,13 +1,13 @@
 import React from "react";
-import flag from "@/public/assets/flag.svg";
-import justice from "@/public/assets/illustration/jpr.png";
-import Image from "next/image";
 import { notFound, useRouter } from "next/navigation";
-import { certificatDbType } from "@/types/certi";
-
 import DocContent from "./DocContent";
 import Link from "next/link";
-import { InputsDeces } from "@/types/dece";
+import BouttonEffacer from "./BouttonEffacer";
+import { ResponseCertificatDeces } from "@/types/Certificat";
+
+// Ajout des metadonnées
+
+import { Metadata, ResolvingMetadata } from "next";
 
 type Props = {
   params: {
@@ -16,45 +16,61 @@ type Props = {
   searchParams: { token: string };
 };
 
-async function getData(token: string) {
-  const res = await fetch(
-    `https://projetutor.onrender.com/app/get_certi_desc_par_hopital/${token}`,
-    {
-      next: {
-        revalidate: 60,
-      },
-    }
-  );
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
+// Fonction pour ajouter les metadonnées
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const id = params.id;
 
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    return notFound();
-  }
+  // fetch data
+  const certificat: ResponseCertificatDeces = await fetch(
+    `https://projetutor.onrender.com/app/print_cert_desc/${id}`
+  ).then((res) => res.json());
 
-  return res.json();
+  // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+
+  const titre = `Certificat de ${certificat.Certificat.nom_defunt} ${
+    certificat.Certificat.post_nom_defunt &&
+    certificat.Certificat.post_nom_defunt
+  }`;
+
+  return {
+    title: titre,
+    description: `Certificat de décès de ${certificat.Certificat.nom_defunt} ${
+      certificat.Certificat.post_nom_defunt &&
+      certificat.Certificat.post_nom_defunt
+    }`,
+    themeColor: "#000000",
+    openGraph: {
+      images: ["/some-specific-page-image.jpg", ...previousImages],
+    },
+  };
 }
 
 export default async function page({ params, searchParams }: Props) {
-  const data = await getData(searchParams.token);
+  const getAdresse = await fetch(
+    `https://projetutor.onrender.com/app/print_cert_desc/${params.id}`
+  );
 
-  const certData: InputsDeces = data[params.id - 1];
+  const certificatDec: ResponseCertificatDeces = await getAdresse.json();
 
-  //   const getAdresse = await fetch(
-  //     `https://projetutor.onrender.com/app/get_certi_desc_par_hopital/${params.id}`
-  //   );
-  //   const adresse = await getAdresse.json();
-
-  if (!certData) {
+  if (!certificatDec) {
     return notFound;
   }
   return (
     <div className="md:mx-32 mt-4  h-screen">
-      <h2 className="my-3 text-3xl font-bold">
-        Certificat de {certData.nom_defunt} {certData.postnom_defunt}
-      </h2>
-      <DocContent data={certData} />
+      <div className="flex justify-between">
+        <h2 className="my-3 text-3xl font-bold">
+          Certificat de {certificatDec.Certificat.nom_defunt}{" "}
+          {certificatDec.Certificat.post_nom_defunt &&
+            certificatDec.Certificat.post_nom_defunt}{" "}
+        </h2>
+        <BouttonEffacer id={params.id} />
+      </div>
+      <DocContent data={certificatDec} />
 
       <div className="mt-7 pb-6">
         <Link href={`/dashboard/certificat-de-deces/`} className="btn btn-info">

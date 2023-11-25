@@ -8,7 +8,6 @@ import { FaTrashAlt } from "react-icons/fa";
 
 type Props = {
   id: number;
-  type: string;
 };
 
 enum urlType {
@@ -17,8 +16,8 @@ enum urlType {
   certificatNaissance = "/app/create_certinaiss",
   certificatDeces = "RIGHT",
 }
-export default function BouttonEffacer({ id, type }: Props) {
-  console.log(id, type);
+export default function BouttonEffacer({ id }: Props) {
+  console.log(id);
   const openModal = (id: string) => {
     const model = document.getElementById(id) as HTMLDialogElement;
     if (model) {
@@ -35,12 +34,12 @@ export default function BouttonEffacer({ id, type }: Props) {
         <FaTrashAlt size={16} color={"#fff"} />
       </button>
       <Toaster />
-      <Confirmation id={id} type={type} />
+      <Confirmation id={id} />
     </>
   );
 }
 
-export const Confirmation = ({ id, type }: Props) => {
+export const Confirmation = ({ id }: Props) => {
   const token = sessionStorage.getItem("access") || "";
   console.log(id);
   const handleRemoveCertificat = () => {

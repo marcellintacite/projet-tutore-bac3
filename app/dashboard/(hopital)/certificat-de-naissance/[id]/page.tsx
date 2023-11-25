@@ -2,13 +2,13 @@ import React from "react";
 import flag from "@/public/assets/flag.svg";
 import justice from "@/public/assets/illustration/jpr.png";
 import Image from "next/image";
-import { notFound, useRouter } from "next/navigation";
-import { certificatDbType } from "@/types/certi";
+import { notFound } from "next/navigation";
 
 import DocContent from "./DocContent";
 import Link from "next/link";
 import BouttonEffacer from "./BouttonEffacer";
 import { ResponseCertificat } from "@/types/Certificat";
+import { Metadata, ResolvingMetadata } from "next";
 
 type Props = {
   params: {
@@ -16,6 +16,40 @@ type Props = {
   };
   searchParams: { token: string };
 };
+
+// Ajout des metadonnées
+// Fonction pour ajouter les metadonnées
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const id = params.id;
+
+  // fetch data
+  const certificat: ResponseCertificat = await fetch(
+    `https://projetutor.onrender.com/app/print_cert/${params.id}`
+  ).then((res) => res.json());
+
+  // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+
+  const titre = `Certificat de ${certificat.Certificat.nom_enfant} ${
+    certificat.Certificat.post_nom_enfant && certificat.Certificat.prenom_enfant
+  }`;
+
+  return {
+    title: titre,
+    description: `Certificat de décès de ${certificat.Certificat.nom_enfant} ${
+      certificat.Certificat.prenom_enfant &&
+      certificat.Certificat.post_nom_enfant
+    }`,
+    themeColor: "#000000",
+    openGraph: {
+      images: ["/some-specific-page-image.jpg", ...previousImages],
+    },
+  };
+}
 
 export default async function page({ params, searchParams }: Props) {
   console.log(params.id);

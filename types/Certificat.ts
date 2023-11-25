@@ -38,3 +38,35 @@ export type ResponseCertificat = {
     hospital_id: number;
   };
 };
+
+export type ResponseCertificatDeces = {
+  province: { id: number; denom: string };
+  terriville: { id: number; denom: string; prov: number };
+  hospital: {
+    id: number;
+    email: string;
+    boite_postal: string;
+    denom: string;
+    numeros_id: string;
+    user: number;
+    prov: number;
+    TerriVi: number;
+  };
+  Certificat: {
+    id: number;
+    medecin_traitant: string;
+    nom_defunt: string;
+    post_nom_defunt: string;
+    prenom_defunt: string;
+    sexe_defunt: string;
+    lieu_naissance: string;
+    date_naissance_defunt: string;
+    profession_defunt: string;
+    cause_desc: string;
+    date_desc: string;
+    date_deliv_cert: string;
+    url_qrcode?: string;
+    cod_qr?: string;
+    hospital_id: number;
+  };
+};
