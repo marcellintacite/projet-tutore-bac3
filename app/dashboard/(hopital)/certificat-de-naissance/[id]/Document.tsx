@@ -24,7 +24,7 @@ const Quixote = ({ certificat }: { certificat: ResponseCertificat }) => {
 
   console.log(
     "img",
-    `https://projetutor.onrender.com/${certificat.Certificat.cod_qr}`
+    `https://projetutor.onrender.com${certificat.Certificat.cod_qr}`
   );
   return (
     <Document
@@ -106,10 +106,13 @@ const Quixote = ({ certificat }: { certificat: ResponseCertificat }) => {
         </View>
         {certificat.Certificat.url_qrcode && (
           <View style={styles.code}>
-            <Image
-              style={styles.image}
-              source={`https://projetutor.onrender.com/${certificat.Certificat.url_qrcode}`}
-            />
+            <View style={styles.imgContainer}>
+              <Text style={styles.normalBold}>Code QR</Text>
+              <Image
+                style={styles.imageQrcode}
+                source={`https://projetutor.onrender.com${certificat.Certificat.url_qrcode}`}
+              />
+            </View>
           </View>
         )}
 
@@ -235,13 +238,37 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 3,
   },
+
+  imgContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    marginTop: 20,
+    padding: 10,
+    border: "1px solid #000",
+    borderRadius: 5,
+    width: 200,
+  },
+  imageQrcode: {
+    width: 100,
+    height: 100,
+    marginTop: 20,
+    marginBottom: 20,
+  },
   suite: {
     fontSize: 14,
     textAlign: "justify",
     fontFamily: "Times-Roman",
     marginBottom: 10,
   },
-
+  code: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    marginTop: 20,
+  },
   foot: {
     position: "absolute",
     bottom: 0,
@@ -250,11 +277,6 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: "#eaf4ff",
     padding: 10,
-  },
-  code: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
   },
 });
 
