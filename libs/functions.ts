@@ -52,12 +52,13 @@ export const addDeces = (data: InputsDeces, show: boolean, setShow: any) => {
     });
 };
 
-export const removeActeDeces = (id: number) => {
-  const token = sessionStorage.getItem("access");
+export const removeActeDeces = (id: number, token: string) => {
   axiosCon
-    .post("/app/create_certi_desc/", {
-      token,
-      id,
+    .delete("/app/create_certi_desc", {
+      data: {
+        token,
+        cert_id: id,
+      },
     })
     .then((res) => {
       toast.success("Deces supprimé avec succès");
@@ -66,5 +67,32 @@ export const removeActeDeces = (id: number) => {
     .catch((err) => {
       toast.error("Il y a une erreur avec la suppression du deces");
       console.log(err);
+    });
+};
+
+// update
+export const deleteDeces = (
+  data: InputsDeces,
+  id: string,
+  token: string,
+  setShow: any
+) => {
+  setShow(true);
+  console.log(data);
+  axiosCon
+    .put("/app/create_certi_desc/", {
+      token,
+      cert_id: id,
+      new_certidesc: data,
+    })
+    .then((res) => {
+      toast.success("Certificat de décès modifié avec succès");
+      console.log(res);
+      setShow(false);
+    })
+    .catch((err) => {
+      toast.error("Il y a une erreur avec l'ajout du deces");
+      console.log(err);
+      setShow(false);
     });
 };

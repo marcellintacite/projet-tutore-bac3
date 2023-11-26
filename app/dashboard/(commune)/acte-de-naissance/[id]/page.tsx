@@ -29,7 +29,10 @@ export default async function page({ params, searchParams }: Props) {
       </h2> */}
       {/* <ActeNaissance data={current} /> */}
       <div className="mt-7 pb-6">
-        <Link href={`/dashboard/certificat-de-deces/`} className="btn btn-info">
+        <Link
+          href={`/dashboard/certificat-de-naissance/`}
+          className="btn btn-info"
+        >
           Retourner
         </Link>
       </div>

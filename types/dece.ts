@@ -6,4 +6,6 @@ export type InputsDeces = {
   sexe_defunt: string;
   cause_desc: string;
   id?: number;
+  date_desc?: string;
+  date_naissance_defunt?: string;
 };

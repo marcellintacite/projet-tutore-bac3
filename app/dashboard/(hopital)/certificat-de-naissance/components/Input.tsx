@@ -6,6 +6,7 @@ type Props = {
   label: string;
   placeholder: string;
   type: "text" | string;
+  value?: string;
 };
 
 const CustomInput = (props: Props) => {
@@ -23,6 +24,7 @@ const CustomInput = (props: Props) => {
           required: "Ce champ est requis",
           minLength: 1,
         })}
+        value={props.value}
       />
     </div>
   );

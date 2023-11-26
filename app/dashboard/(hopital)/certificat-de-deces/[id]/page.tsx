@@ -1,9 +1,11 @@
 import React from "react";
-import { notFound, useRouter } from "next/navigation";
+import { notFound } from "next/navigation";
+import { useRouter } from "next/navigation";
 import DocContent from "./DocContent";
 import Link from "next/link";
 import BouttonEffacer from "./BouttonEffacer";
 import { ResponseCertificatDeces } from "@/types/Certificat";
+import { FaEdit } from "react-icons/fa";
 
 // Ajout des metadonnées
 
@@ -60,6 +62,7 @@ export default async function page({ params, searchParams }: Props) {
   if (!certificatDec) {
     return notFound;
   }
+
   return (
     <div className="md:mx-32 mt-4  h-screen">
       <div className="flex justify-between">
@@ -68,7 +71,15 @@ export default async function page({ params, searchParams }: Props) {
           {certificatDec.Certificat.post_nom_defunt &&
             certificatDec.Certificat.post_nom_defunt}{" "}
         </h2>
-        <BouttonEffacer id={params.id} />
+        <div className="flex gap-5">
+          <Link
+            className="btn btn-success btn-square"
+            href={`/dashboard/certificat-de-deces/${params.id}/edit?token=${searchParams.token}`}
+          >
+            <FaEdit size={16} color={"#fff"} />
+          </Link>
+          <BouttonEffacer id={params.id} token={searchParams.token} />
+        </div>
       </div>
       <DocContent data={certificatDec} />
 
