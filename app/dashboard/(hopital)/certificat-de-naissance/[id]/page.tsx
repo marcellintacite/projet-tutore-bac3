@@ -9,6 +9,7 @@ import Link from "next/link";
 import BouttonEffacer from "./BouttonEffacer";
 import { ResponseCertificat } from "@/types/Certificat";
 import { Metadata, ResolvingMetadata } from "next";
+import { FaEdit } from "react-icons/fa";
 
 type Props = {
   params: {
@@ -73,7 +74,15 @@ export default async function page({ params, searchParams }: Props) {
           Certificat de {certificat.Certificat.nom_enfant}{" "}
           {certificat.Certificat.prenom_enfant}
         </h2>
-        <BouttonEffacer id={params.id} type="certificat-naissance" />
+        <div className="gap-3 flex">
+          <Link
+            className="btn btn-success btn-square"
+            href={`/dashboard/certificat-de-naissance/${params.id}/edit?token=${searchParams.token}`}
+          >
+            <FaEdit size={16} color={"#fff"} />
+          </Link>
+          <BouttonEffacer id={params.id} type="certificat-naissance" />
+        </div>
       </div>
       <DocContent certificat={certificat} />
 

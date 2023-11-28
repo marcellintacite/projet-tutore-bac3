@@ -82,8 +82,8 @@ export const deleteDeces = (
   axiosCon
     .put("/app/create_certi_desc/", {
       token,
-      cert_id: id,
-      new_certidesc: data,
+      certNaiss_id: id,
+      cert_naiss: data,
     })
     .then((res) => {
       toast.success("Certificat de décès modifié avec succès");
