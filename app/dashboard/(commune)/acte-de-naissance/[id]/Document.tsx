@@ -13,8 +13,9 @@ import {
 } from "@react-pdf/renderer";
 import logo from "../../../../../public/assets/illustration/jpr.png";
 import { InputesActe } from "@/types/acteType";
+import { ResponseActeNaissance } from "@/types/commune";
 
-const Quixote = ({ data, adress }: { data: InputesActe; adress?: any }) => {
+const Quixote = ({ data }: { data: ResponseActeNaissance }) => {
   const dateOption = {
     weekday: "long",
     year: "numeric",
@@ -25,74 +26,136 @@ const Quixote = ({ data, adress }: { data: InputesActe; adress?: any }) => {
   return (
     <Document
       title={`
-    certificat de naissance de ${data.nom_declarant}     
+    certificat de naissance de ${data.Certificat.nom_enfant} ${data.Certificat.prenom_enfant}}     
 
     `}
     >
       <Page style={styles.body}>
-        <View style={styles.congo}>
-          <Image
-            src={window.location.origin + "/assets/illustration/jpr.png"}
-            style={styles.image}
-          />
-          <Image
-            src={window.location.origin + "/assets/illustration/drapeau.png"}
-            style={styles.image}
-          />
-        </View>
-
-        <View style={styles.head}>
-          <Text style={styles.title}>
-            HOPITAL GENERAL DE REFERENCE DE{" "}
-            {sessionStorage.getItem("username")?.toUpperCase()}
-          </Text>
-          <Text style={styles.author}>test@gmail.com</Text>
-          <Text style={styles.author}>BP : 850 , BUKAVU | SUD-KIVU</Text>
-
-          <View style={styles.absolute}>
+        <View style={styles.contentContainer}>
+          <View style={styles.congo}>
             <Image
+              src={window.location.origin + "/assets/illustration/drapeau.png"}
               style={styles.image}
-              source={
-                "https://presidence.cd/uploads/a771e9a5d17203f8712c8f01c3fdc473.png"
-              }
+            />
+            {/* Text pour le pays */}
+            <View style={styles.head}>
+              <Text style={styles.title}>REPUBLIQUE DEMOCRATIQUE DU CONGO</Text>
+              <Text style={styles.sub}>
+                PROVINCE {data.province.denom.toUpperCase()}
+              </Text>
+              <Text style={styles.sub}>
+                MAIRIE DE {data.commune.denom.toUpperCase()}
+              </Text>
+              <Text style={styles.sub}>
+                COMMUNE DE (D') {data.commune.denom.toUpperCase()}
+              </Text>
+            </View>
+
+            <Image
+              src={window.location.origin + "/assets/illustration/jpr.png"}
+              style={styles.image}
             />
           </View>
-        </View>
-        <View style={styles.content}>
-          <Text style={styles.sub}>CERTIFICAT DE DECES No {data.id}</Text>
-          {/* <Text style={styles.normal}>
-            Je soussigné, Dr. {data.nom_medecin} , médecin traitant à l'hopital
-            General de {sessionStorage.getItem("username")?.toUpperCase()},
-            avoir suivi en hospitalisation, Monsieur présente que la nommée{" "}
-            {data.nom_complet_mere};
-          </Text>
-          <Text style={styles.suite}>
-            Femme de {data.nom_complet_pere} a accouché le{" "}
-            {new Date(data.date_nais_enfant).toLocaleDateString()} d’un enfant
-            de sexe {data.sexe_enfant === "m" ? "masculin" : "feminin"} pesant{" "}
-            {data.poid_enfant}g ayant pour nom {data.nom_enfant}{" "}
-            {data.post_nom_enfant} {data.prenom_enfant}.
-          </Text> */}
-        </View>
-        <View style={styles.footer}>
-          <Text style={styles.normal}>
-            Fait à Bukavu, le{" "}
-            {new Date(data.date_enregistrement).toLocaleDateString("fr-FR", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
-          </Text>
 
-          <View style={styles.sceau}>
-            <Text style={styles.normalBold}>Sceau</Text>
-            <Text style={styles.normalBold}>Signature</Text>
+          <View style={styles.content}>
+            <Text style={styles.normal}>OFFICE DE L'ETAT CIVIL</Text>
           </View>
-        </View>
-        <View style={styles.foot}>
-          <Text style={styles.header} fixed>
-            ~ Certificat de naissance~
-          </Text>
+
+          <View style={styles.heade}>
+            <Text style={styles.titleUndeline}>
+              ACTE DE NAISSANCE N° {data.acte.id}
+            </Text>
+          </View>
+          <View>
+            <Text style={styles.normal}>
+              Je soussigné, {data.commune.nom_bour} officier de l'Etat Civil et
+              Bourgoumestre de la Commune de {data.commune.denom} , ville de{" "}
+              {data.terriville.denom}, atteste par la présente que le (la)
+              nommé(e) : {data.Certificat.nom_enfant}{" "}
+              {data.Certificat.prenom_enfant} {data.Certificat.post_nom_enfant}
+            </Text>
+            <View style={styles.flex}>
+              <Text style={styles.normal}>Fils (fille) de :</Text>
+              <Text style={styles.normalBold}>
+                {data.Certificat.nom_complet_pere}
+              </Text>
+            </View>
+            <View style={styles.flex}>
+              <Text style={styles.normal}>Et de :</Text>
+              <Text style={styles.normalBold}>
+                {data.Certificat.nom_complet_mere}
+              </Text>
+            </View>
+            <View style={styles.flex}>
+              <Text style={styles.normal}>Originaire de :</Text>
+              <Text style={styles.normalBold}>
+                {data.Certificat.collectiv_parent}
+              </Text>
+            </View>
+            <View style={styles.flex}>
+              <Text style={styles.normal}>Chefferie :</Text>
+              <Text style={styles.normalBold}>
+                {data.Certificat.localite_parent}
+              </Text>
+            </View>
+            <View style={styles.flex}>
+              <Text style={styles.normal}>Territoire de :</Text>
+              <Text style={styles.normalBold}>{data.terriville.denom}</Text>
+            </View>
+            <View style={styles.flex}>
+              <Text style={styles.normal}>Province de :</Text>
+              <Text style={styles.normalBold}>{data.province.denom}</Text>
+            </View>
+            <View style={styles.flex}>
+              <Text style={styles.normal}>Est né (e) à :</Text>
+              <Text style={styles.normalBold}>
+                {data.terriville.denom}, le{" "}
+                {new Date(data.Certificat.date_nais_enfant).toLocaleDateString(
+                  "fr-FR",
+                  {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  }
+                )}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.content}>
+            <Text style={styles.normal}>
+              J'atteste en outre que les reinseignements sont conformes aux
+              inscriptions figurant dans les pièces d'identité de l'intéressé ou
+              de se parents.
+            </Text>
+          </View>
+
+          <View style={styles.footer}>
+            <Text style={styles.normale}>
+              Fait à {data.commune.denom}, le{" "}
+              {new Date(data.Certificat.date_nais_enfant).toLocaleDateString(
+                "fr-FR",
+                {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                }
+              )}
+            </Text>
+          </View>
+
+          {data.acte.url_qrcode && (
+            <View style={styles.code}>
+              <View style={styles.imgContainer}>
+                <Text style={styles.normalBold}>Code QR</Text>
+                <Image
+                  style={styles.imageQrcode}
+                  source={`https://projetutor.onrender.com${data.acte.url_qrcode}`}
+                />
+              </View>
+            </View>
+          )}
         </View>
       </Page>
     </Document>
@@ -106,30 +169,31 @@ Font.register({
 
 const styles = StyleSheet.create({
   body: {
-    paddingTop: 35,
+    paddingTop: 25,
     paddingBottom: 65,
-    paddingHorizontal: 35,
+    paddingHorizontal: 25,
     position: "relative",
   },
+  contentContainer: {
+    width: "100%",
+    height: "100%",
+    border: "5px solid #cf3e3e",
+    padding: 14,
+  },
   congo: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 60,
-    backgroundColor: "#eaf4ff",
     padding: 15,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: "#000",
+    borderBottomStyle: "solid",
   },
   title: {
-    fontSize: 24,
+    fontSize: 16,
     textAlign: "center",
     fontFamily: "Oswald",
-    marginVertical: 10,
-    marginTop: 45,
     fontWeight: "bold",
   },
   sub: {
@@ -137,23 +201,41 @@ const styles = StyleSheet.create({
     fontWeight: "extrabold",
     textAlign: "center",
     fontFamily: "Oswald",
-    marginBottom: 20,
+    fontSize: 14,
   },
   head: {
-    position: "relative",
-  },
-  absolute: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 100,
+    display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    gap: 2,
   },
+  heade: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 2,
+    marginVertical: 10,
+  },
+  titleUndeline: {
+    fontSize: 16,
+    textAlign: "center",
+    fontFamily: "Oswald",
+    fontWeight: "bold",
+    textDecoration: "underline",
+  },
+
+  flex: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 15,
+    marginVertical: 3,
+  },
+
   author: {
     fontSize: 14,
-
     fontFamily: "Times-Roman",
     textAlign: "center",
     marginBottom: 8,
@@ -167,7 +249,7 @@ const styles = StyleSheet.create({
     fontFamily: "Times-Roman",
   },
   image: {
-    width: 50,
+    width: 80,
   },
   header: {
     fontSize: 12,
@@ -189,7 +271,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   footer: {
-    marginTop: 60,
+    marginTop: 40,
   },
   sceau: {
     display: "flex",
@@ -204,12 +286,17 @@ const styles = StyleSheet.create({
     fontFamily: "Times-Roman",
     marginBottom: 3,
   },
+  normale: {
+    fontSize: 14,
+    textAlign: "right",
+    fontFamily: "Times-Roman",
+    marginBottom: 3,
+  },
   normalBold: {
     fontSize: 14,
-    textAlign: "justify",
-    fontFamily: "Times-Roman",
+    textAlign: "center",
+    fontFamily: "Oswald",
     fontWeight: "bold",
-    marginBottom: 3,
   },
   suite: {
     fontSize: 14,
@@ -226,6 +313,29 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: "#eaf4ff",
     padding: 10,
+  },
+  code: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    marginTop: 20,
+  },
+  imgContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    padding: 5,
+    border: "1px solid #000",
+    borderRadius: 5,
+    width: 200,
+  },
+  imageQrcode: {
+    width: 60,
+    height: 60,
+    marginTop: 5,
+    marginBottom: 5,
   },
 });
 

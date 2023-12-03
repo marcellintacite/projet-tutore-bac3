@@ -70,6 +70,7 @@ export default function Login() {
             isLogged: true,
             userRole: res.data.user_type,
             userId: res.data.user_id,
+            token: res.data.access,
           })
         );
         setShow(false);

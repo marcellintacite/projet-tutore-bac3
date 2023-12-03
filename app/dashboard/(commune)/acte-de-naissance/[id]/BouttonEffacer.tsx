@@ -2,25 +2,19 @@
 
 import axiosCon from "@/libs/Axios";
 import { removeActeDeces } from "@/libs/functions";
+import { storeType } from "@/types/store";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { FaTrashAlt } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 type Props = {
   id: number;
-  token: string;
 };
 
-enum urlType {
-  acteNaissance = "UP",
-  acteDeces = "DOWN",
-  certificatNaissance = "/app/create_certinaiss",
-  certificatDeces = "RIGHT",
-}
-export default function BouttonEffacer({ id, token }: Props) {
-  console.log(id);
+export default function BouttonEffacer({ id }: Props) {
   const openModal = (id: string) => {
     const model = document.getElementById(id) as HTMLDialogElement;
     if (model) {
@@ -37,18 +31,31 @@ export default function BouttonEffacer({ id, token }: Props) {
         <FaTrashAlt size={16} color={"#fff"} />
       </button>
       <Toaster />
-      <Confirmation id={id} token={token} />
+      <Confirmation id={id} />
     </>
   );
 }
 
-export const Confirmation = ({ id, token }: Props) => {
+export const Confirmation = ({ id }: Props) => {
+  const { token } = useSelector((state: storeType) => state.user);
   const router = useRouter();
   const handleRemoveCertificat = () => {
-    console.log(id);
-    removeActeDeces(id, token);
-
-    router.push("/dashboard/certificat-de-deces");
+    axiosCon
+      .delete(`/app/create_actenaiss`, {
+        data: {
+          token: token,
+          act_id: id,
+        },
+      })
+      .catch((err) => {
+        toast.error("Erreur lors de la suppression");
+        console.log(err);
+      })
+      .then((res) => {
+        console.log(res);
+        router.push("/dashboard/certificat-de-deces");
+        toast.success("Suppression reussie");
+      });
   };
   return (
     <dialog id="confirmation_naissance" className="modal">

@@ -30,6 +30,14 @@ const Quixote = ({ data }: { data: ResponseCertificatDeces }) => {
     `}
     >
       <Page style={styles.body}>
+        <View>
+          <Image
+            src={
+              window.location.origin + "/assets/illustration/bgCertificat.png"
+            }
+            style={styles.bg}
+          />
+        </View>
         <View style={styles.congo}>
           <Image
             src={window.location.origin + "/assets/illustration/jpr.png"}
@@ -282,6 +290,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "column",
     marginTop: 25,
+  },
+  bg: {
+    width: "100%",
+    position: "absolute",
   },
 });
 

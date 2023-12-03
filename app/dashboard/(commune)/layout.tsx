@@ -13,15 +13,13 @@ type Props = {
 };
 
 export default function layout({ children }: Props) {
-  const { username, email, userRole } = useSelector(
-    (store: storeType) => store.user
-  );
+  const { userRole, token } = useSelector((store: storeType) => store.user);
+
   const router = useRouter();
   const dispatch = useDispatch();
 
-  console.log(userRole);
+  // console.log(userRole, token);
 
-  const token = sessionStorage.getItem("access");
   useEffect(() => {
     if (!token) {
       toast.error("Vous n'avez pas accès");

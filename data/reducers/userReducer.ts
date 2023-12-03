@@ -6,6 +6,7 @@ const initialState: userType = {
   username: "",
   email: "",
   userRole: "",
+  token: "",
 };
 const userSlice = createSlice({
   name: "user",
@@ -16,6 +17,7 @@ const userSlice = createSlice({
       state.username = action.payload.username;
       state.email = action.payload.email;
       state.userRole = action.payload.userRole;
+      state.token = action.payload.token;
     },
     setUserid(state, action) {
       state.userId = action.payload.userId;
