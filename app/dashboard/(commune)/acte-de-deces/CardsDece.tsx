@@ -15,7 +15,7 @@ const getTable = async () => {
   return res.data;
 };
 
-export default function TableReuse({}: Props) {
+export default function TableReuseDeces({}: Props) {
   const [certificats, setCertificats] = useState<certificatDbType[]>([]);
   const [search, setSearch] = useState("");
   let afficher = certificats;

@@ -2,6 +2,7 @@ import TableReuse from "@/components/TableReuse";
 import Navbar from "@/components/dashboard/NavbarSearh";
 import React from "react";
 import Modal from "@/app/components/Modal";
+import TableReuseDeces from "./CardsDece";
 
 type Props = {};
 
@@ -15,7 +16,7 @@ export default function page({}: Props) {
       />
       <Modal />
       <div>
-        <TableReuse />
+        <TableReuseDeces />
       </div>
     </section>
   );
