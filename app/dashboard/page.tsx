@@ -61,15 +61,18 @@ export default function page({}: Props) {
           <h1 className="text-2xl font-bold">Liste des documents recents</h1>
 
           {userRole === "hopital" && <Table />}
-          {userRole === "admin" && <Table />}
+          {/* {userRole === "admin" && <Table />} */}
           {userRole === "commune" && <TableCommune />}
-          {userRole === "admin" && <TableCommune />}
+          {/* {userRole === "admin" && <TableCommune />} */}
         </div>
-        <div className="w-4/5 md:w-2/5 bg-white rounded-lg p-4 m-auto">
-          <h1 className="text-2xl font-bold">Nombre d'opérations</h1>
 
-          <Chart />
-        </div>
+        {userRole === "commune" && (
+          <div className="w-4/5 md:w-2/5 bg-white rounded-lg p-4 m-auto">
+            <h1 className="text-2xl font-bold">Nombre d'opérations</h1>
+
+            <Chart />
+          </div>
+        )}
       </div>
     </div>
   );

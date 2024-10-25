@@ -16,8 +16,8 @@ export default function page({}: Props) {
       <Toaster position="top-center" />
       <Navbar name="Comptes" path={"/dashboard"} />
       <div className="flex gap-3 flex-col md:flex-row">
-        <TableUser />
-        <div className="bg-white rounded-md p-3">
+        {/* <TableUser /> */}
+        <div className="bg-white rounded-md p-3 w-full">
           <h3 className="text-lg font-bold">Actions</h3>
           <Actions />
         </div>

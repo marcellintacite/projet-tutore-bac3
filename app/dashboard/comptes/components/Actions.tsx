@@ -28,9 +28,9 @@ export default function Actions() {
       >
         Ajouter une commune
       </button>
-      <button className="btn  rounded-md btn-neutral">Ajouter un compte</button>
+      {/* <button className="btn  rounded-md btn-neutral">Ajouter un compte</button> */}
       <button
-        className="btn  rounded-md btn-warning"
+        className="btn  rounded-md btn-neutral"
         onClick={() => openModal("my_modal_13")}
       >
         Ajouter un hopital

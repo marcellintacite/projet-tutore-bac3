@@ -10,6 +10,7 @@ import BouttonEffacer from "./BouttonEffacer";
 import { ResponseCertificat } from "@/types/Certificat";
 import { Metadata, ResolvingMetadata } from "next";
 import { FaEdit } from "react-icons/fa";
+import { base_url } from "@/data/url";
 
 type Props = {
   params: {
@@ -29,7 +30,7 @@ export async function generateMetadata(
 
   // fetch data
   const certificat: ResponseCertificat = await fetch(
-    `https://projetutor.onrender.com/app/print_cert/${params.id}`
+    `${base_url}/app/print_cert/${params.id}`
   ).then((res) => res.json());
 
   // optionally access and extend (rather than replace) parent metadata
@@ -56,9 +57,7 @@ export default async function page({ params, searchParams }: Props) {
   console.log(params.id);
 
   // `https://projetutor.onrender.com/app/print_cert/${params.id}`
-  const getAdresse = await fetch(
-    `https://projetutor.onrender.com/app/print_cert/${params.id}`
-  );
+  const getAdresse = await fetch(`${base_url}/app/print_cert/${params.id}`);
 
   const certificat: ResponseCertificat = await getAdresse.json();
 

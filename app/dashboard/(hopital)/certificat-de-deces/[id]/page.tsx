@@ -10,6 +10,7 @@ import { FaEdit } from "react-icons/fa";
 // Ajout des metadonnées
 
 import { Metadata, ResolvingMetadata } from "next";
+import { base_url } from "@/data/url";
 
 type Props = {
   params: {
@@ -28,7 +29,7 @@ export async function generateMetadata(
 
   // fetch data
   const certificat: ResponseCertificatDeces = await fetch(
-    `https://projetutor.onrender.com/app/print_cert_desc/${id}`
+    `${base_url}/app/print_cert_desc/${id}`
   ).then((res) => res.json());
 
   // optionally access and extend (rather than replace) parent metadata
@@ -53,8 +54,9 @@ export async function generateMetadata(
 }
 
 export default async function page({ params, searchParams }: Props) {
+  console.log(`${base_url}/app/print_cert_desc/${params.id}`);
   const getAdresse = await fetch(
-    `https://projetutor.onrender.com/app/print_cert_desc/${params.id}`
+    `${base_url}/app/print_cert_desc/${params.id}`
   );
 
   const certificatDec: ResponseCertificatDeces = await getAdresse.json();

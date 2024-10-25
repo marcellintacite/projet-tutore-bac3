@@ -23,6 +23,8 @@ export default function TableCommune({}: Props) {
     queryFn: getTable,
   });
 
+  console.log(data);
+
   if (isLoading)
     return (
       <div className="w-full flex justify-center items-center pb-7 mt-5">
@@ -32,9 +34,9 @@ export default function TableCommune({}: Props) {
 
   if (error) return notFound();
   const dataShow = data?.slice(0, 5);
-  console.log(dataShow);
+
   return (
-    <div className="overflow-x-auto bg-white w-full rounded-md flex flex-wrap gap-5 p-4 justify-center items-center">
+    <div className="overflow-x-auto bg-white w-full min-h-8 rounded-md flex flex-wrap gap-5 p-4 justify-center items-center">
       {dataShow.map((d: ActeNaissance) => (
         <CardDocCommuneTable key={d.id} certificat={d} />
       ))}

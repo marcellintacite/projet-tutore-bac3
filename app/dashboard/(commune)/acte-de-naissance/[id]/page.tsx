@@ -7,6 +7,7 @@ import ActeNaissance from "./DocContent";
 import { ResponseActeNaissance } from "@/types/commune";
 import BouttonEffacer from "./BouttonEffacer";
 import { FaEdit } from "react-icons/fa";
+import { base_url } from "@/data/url";
 
 type Props = {
   params: {
@@ -19,7 +20,7 @@ type Props = {
 
 export default async function page({ params, searchParams }: Props) {
   const getAdresse = await fetch(
-    `https://projetutor.onrender.com/app/print_acte_naiss/${params.id}`
+    `${base_url}/app/print_acte_naiss/${params.id}`
   );
 
   const certificat: ResponseActeNaissance = await getAdresse.json();

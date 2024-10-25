@@ -14,6 +14,7 @@ import {
 import logo from "../../../../../public/assets/illustration/jpr.png";
 import { InputesActe } from "@/types/acteType";
 import { ResponseActeNaissance } from "@/types/commune";
+import { base_url } from "@/data/url";
 
 const Quixote = ({ data }: { data: ResponseActeNaissance }) => {
   const dateOption = {
@@ -22,7 +23,7 @@ const Quixote = ({ data }: { data: ResponseActeNaissance }) => {
     month: "long",
     day: "numeric",
   };
-  console.log(data);
+  // console.log("Lien : :", data.base_url, data.acte.cod_qr);
   return (
     <Document
       title={`
@@ -151,7 +152,7 @@ const Quixote = ({ data }: { data: ResponseActeNaissance }) => {
                 <Text style={styles.normalBold}>Code QR</Text>
                 <Image
                   style={styles.imageQrcode}
-                  source={`https://projetutor.onrender.com${data.acte.url_qrcode}`}
+                  source={`${base_url}${data.Certificat.url_qrcode}`}
                 />
               </View>
             </View>

@@ -3,6 +3,7 @@ import Navbar from "@/components/dashboard/NavbarSearh";
 import React from "react";
 import Modal from "@/app/components/Modal";
 import TableReuseDeces from "./CardsDece";
+import Coming from "@/components/Coming";
 
 type Props = {};
 
@@ -14,9 +15,10 @@ export default function page({}: Props) {
         name="Acte de décès"
         path={"/dashboard/acte-de-deces"}
       />
-      <Modal />
+      {/* <Modal /> */}
       <div>
-        <TableReuseDeces />
+        {/* <TableReuseDeces /> */}
+        <Coming />
       </div>
     </section>
   );

@@ -50,7 +50,7 @@ export default function Sidebar({}: Props) {
             icon={<RxDashboard size={26} />}
             path="/dashboard"
           />
-          {(userRole === "admin" || userRole === "commune") && (
+          {userRole === "commune" && (
             <>
               <CardNavigation
                 title="Acte de naissance"
@@ -65,7 +65,7 @@ export default function Sidebar({}: Props) {
             </>
           )}
 
-          {(userRole === "hopital" || userRole === "admin") && (
+          {userRole === "hopital" && (
             <>
               <CardNavigation
                 title="Certificat de décès"
