@@ -207,7 +207,7 @@ export default function Login() {
           />
         </form>
       </div>
-      <div
+      {/* <div
         className="
       hidden md:flex  items-center justify-center  flex-2 mt-5 md:mt-0   bg-[#FAFAFA] md:h-screen
       "
@@ -217,7 +217,7 @@ export default function Login() {
           alt="Logo"
           className="w-1/2"
         />
-      </div>
+      </div> */}
     </main>
   );
 }

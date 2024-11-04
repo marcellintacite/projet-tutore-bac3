@@ -22,6 +22,7 @@ const Quixote = ({ certificat }: { certificat: ResponseCertificat }) => {
     day: "numeric",
   };
 
+  console.log("certificat", certificat);
   console.log(
     "img",
     `https://projetutor.onrender.com${certificat.Certificat.cod_qr}`

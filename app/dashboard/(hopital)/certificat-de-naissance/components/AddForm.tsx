@@ -54,6 +54,7 @@ const AddForm = (props: Props) => {
           new_certinaiss: data,
         })
         .then((res) => {
+          console.log(res)
           reset();
           document.querySelector("dialog")?.close();
           toast.success("Ajouté avec succès");

@@ -20,14 +20,14 @@ type province = {
   denom: string;
   id: number;
 }[];
-type territoire = {
+export type Territoire = {
   id: number;
   denom: string;
   prov: number;
 }[];
 export default function ModalHopital() {
   const [provinces, setProvinces] = useState<province>([]);
-  const [territoires, setTerritoires] = useState<territoire>([]);
+  const [territoires, setTerritoires] = useState<Territoire>([]);
   const {
     register,
     handleSubmit,

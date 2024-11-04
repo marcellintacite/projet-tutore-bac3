@@ -42,7 +42,7 @@ export default function Sidebar({}: Props) {
       "
         >
           <Image src={logo} alt="Logo" width={40} height={40} />
-          <h2 className="hidden md:block text-2xl font-bold">Le Citoyen</h2>
+          <h2 className="hidden lg:block text-2xl font-bold">Le Citoyen</h2>
         </div>
         <div className=" w-full lg:px-6 flex gap-2 md:flex-col">
           <CardNavigation

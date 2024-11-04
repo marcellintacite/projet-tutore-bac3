@@ -9,7 +9,7 @@ type Input = {
   denom: string;
 };
 
-type province = {
+export type province = {
   denom: string;
   id: number;
 }[];

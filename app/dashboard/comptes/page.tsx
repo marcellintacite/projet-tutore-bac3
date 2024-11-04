@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import ModalTerritoire from "./components/ModalTerritoire";
 import ModalCommune from "./components/ModalCommune";
 import ModalHopital from "./components/ModalHopital";
+import ProvinceTable from "./components/ProvinceTable";
 
 type Props = {};
 
@@ -25,6 +26,11 @@ export default function page({}: Props) {
         <ModalTerritoire />
         <ModalCommune />
         <ModalHopital />
+
+        <div className="bg-white rounded-md p-3 w-full">
+          <h3 className="text-lg font-bold">Liste des provinces</h3>
+          <ProvinceTable />
+        </div>
       </div>
     </div>
   );

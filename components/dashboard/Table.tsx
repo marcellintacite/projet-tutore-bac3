@@ -32,7 +32,7 @@ export default function Table({}: Props) {
   if (error) return notFound();
   const dataShow = data?.slice(0, 5);
   return (
-    <div className="overflow-x-auto bg-white w-full rounded-md flex flex-wrap gap-5 p-4 justify-center items-center">
+    <div className="overflow-x-auto bg-white h-56 w-full rounded-md flex flex-wrap gap-5 p-4 justify-center items-center">
       {dataShow.map((d: certificatDbType) => (
         <CardDocDash key={d.id} certificat={d} />
       ))}
