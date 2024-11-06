@@ -73,13 +73,13 @@ export default function ModalCommune() {
       .then((res) => {
         reset();
         document.querySelector("dialog")?.close();
-        toast.success("Territoire ajouté");
+        toast.success("Commune ajouté");
       })
       .catch((err) => {
         console.log(err);
 
         if (err.response.status === 406) {
-          toast.error("Ce territoire existe");
+          toast.error("Cette commune existe");
           reset();
           document.querySelector("dialog")?.close();
         } else {
