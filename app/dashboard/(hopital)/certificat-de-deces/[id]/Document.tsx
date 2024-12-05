@@ -13,6 +13,7 @@ import {
 } from "@react-pdf/renderer";
 import logo from "../../../../../public/assets/illustration/jpr.png";
 import { ResponseCertificatDeces } from "@/types/Certificat";
+import { base_url } from "@/data/url";
 
 const Quixote = ({ data }: { data: ResponseCertificatDeces }) => {
   const dateOption = {
@@ -21,7 +22,9 @@ const Quixote = ({ data }: { data: ResponseCertificatDeces }) => {
     month: "long",
     day: "numeric",
   };
-  console.log(data);
+
+  const link = base_url + data.Certificat.url_qrcode;
+  console.log("Lient : ", link);
   return (
     <Document
       title={`
@@ -121,10 +124,7 @@ const Quixote = ({ data }: { data: ResponseCertificatDeces }) => {
           <View style={styles.code}>
             <View style={styles.imgContainer}>
               <Text style={styles.normalBold}>Code QR</Text>
-              <Image
-                style={styles.imageQrcode}
-                source={`https://projetutor.onrender.com${data.Certificat.url_qrcode}`}
-              />
+              <Image style={styles.imageQrcode} source={link} src={link} />
             </View>
           </View>
         )}

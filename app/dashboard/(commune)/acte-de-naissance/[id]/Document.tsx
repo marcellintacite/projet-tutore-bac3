@@ -23,7 +23,9 @@ const Quixote = ({ data }: { data: ResponseActeNaissance }) => {
     month: "long",
     day: "numeric",
   };
-  // console.log("Lien : :", data.base_url, data.acte.cod_qr);
+
+  const link = base_url + data.acte.cod_qr;
+  console.log("Lient ", link);
   return (
     <Document
       title={`
@@ -146,14 +148,11 @@ const Quixote = ({ data }: { data: ResponseActeNaissance }) => {
             </Text>
           </View>
 
-          {data.acte.url_qrcode && (
+          {data.acte.cod_qr && (
             <View style={styles.code}>
               <View style={styles.imgContainer}>
                 <Text style={styles.normalBold}>Code QR</Text>
-                <Image
-                  style={styles.imageQrcode}
-                  source={`${base_url}${data.Certificat.url_qrcode}`}
-                />
+                <Image style={styles.imageQrcode} src={link} source={link} />
               </View>
             </View>
           )}

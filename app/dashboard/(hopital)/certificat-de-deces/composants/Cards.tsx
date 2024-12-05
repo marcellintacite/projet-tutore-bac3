@@ -18,6 +18,7 @@ const getTable = async () => {
   return res.data;
 };
 
+
 export default function TableDeces({}: Props) {
   const [certificats, setCertificats] = useState<certificatDbType[]>([]);
   const [search, setSearch] = useState("");

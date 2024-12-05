@@ -2,8 +2,8 @@
 import Link from "next/link";
 
 type DeathCertificateCardProps = {
-  id: string;
-  declarationNumber: string;
+  id: string | number;
+  declarationNumber: string | number;
   name: string;
   deathDate: string;
   deathPlace: string;
