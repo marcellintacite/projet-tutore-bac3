@@ -20,7 +20,6 @@ type DataRes = {
 
 export default function Card({ lien, icon, label }: Props) {
   const [data, setData] = useState<DataRes>();
-  console.log(data);
 
   useEffect(() => {
     axiosCon
@@ -55,6 +54,9 @@ export default function Card({ lien, icon, label }: Props) {
           </div>
         </div>
         <p>{label}</p>
+        <small>
+          {data?.date ? new Date(data.date).toLocaleDateString() : ""}
+        </small>
       </div>
     </Link>
   );

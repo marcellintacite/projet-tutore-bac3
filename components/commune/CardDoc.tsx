@@ -25,7 +25,7 @@ export default function CardDocCommune({ certificat }: Props) {
         <IoDocumentText size={80} color="grey" />
       </div>
       <div className="card-body">
-        <h2 className="card-title">ID : {certificat.certNais_id}</h2>
+        <h2 className="card-title">Declarant : {certificat.nom_declarant}</h2>
         <p>
           Certificat de naissance etabli le {certificat.date_enregistrement}
         </p>

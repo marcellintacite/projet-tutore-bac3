@@ -1,5 +1,5 @@
 export type ActeDecesData = {
-  cert_desc_id: number;
+  cert_desc_id: number | string;
   cod_qr: string | null;
   commune: number;
   conjoint_identite: string;

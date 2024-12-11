@@ -67,7 +67,7 @@ export default function page({}: Props) {
         </div>
 
         {userRole === "commune" && (
-          <div className="w-4/5 md:w-2/5 bg-white rounded-lg p-4 m-auto h-28">
+          <div className="w-4/5 md:w-2/5 bg-white rounded-lg p-4 m-auto h-auto min-h-[300px]">
             <h1 className="text-2xl font-bold">Nombre d'opérations</h1>
 
             <Chart />

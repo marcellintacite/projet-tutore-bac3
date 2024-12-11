@@ -3,7 +3,7 @@ import axios from "axios";
 
 const axiosCon = axios.create({
   // baseURL: base_url,
-  baseURL: "https://ratio-nais-desc-22-23.onrender.com",
+  baseURL: base_url,
 });
 
 export default axiosCon;

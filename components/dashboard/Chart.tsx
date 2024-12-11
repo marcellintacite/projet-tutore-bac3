@@ -70,5 +70,5 @@ export default function Chart({}: Props) {
         <span className="loading loading-spinner text-primary"></span>
       </div>
     );
-  return <Doughnut data={dataChart} className="w-full" />;
+  return <Doughnut data={dataChart} className="w-full " />;
 }
