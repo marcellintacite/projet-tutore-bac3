@@ -1,39 +1,87 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-
+import axios from "axios"; // Ensure axios is set up correctly
+import toast from "react-hot-toast";
+import axiosCon from "@/libs/Axios";
 type DeathCertificateFormInputs = {
-  declarationNumber: string;
-  volume: string;
-  deathNumber: string;
-  deathYear: string;
-  deathMonth: string;
-  deathDay: string;
-  deathPlace: string;
-  name: string;
-  gender: string;
-  profession: string;
-  mainResidence: string;
-  temporaryResidence: string;
-  nationality: string;
-  statusAtDeath: string;
-  birthDate: string;
-  birthPlace: string;
-  birthFather: string;
-  birthMother: string;
+  cert_desc_id: number;
+  numeros_volume: string;
+  nom_declarant: string;
+  qualite_declarant: string;
+  profession_declarant: string;
+  residence_principale: string;
+  residence_temporaire?: string;
+  nationalite: string;
+  etat_civile: "m" | "c"; // "m" for Marié, "c" for Célibataire
+  conjoint_identite?: string;
+  nom_complet_pere: string;
+  nom_complet_mere: string;
+  langue_redaction: "Français" | "Anglais" | "Swahili";
 };
 
 export default function DeathCertificateForm() {
+  const professions = [
+    "Médecin",
+    "Enseignant",
+    "Ingénieur",
+    "Agriculteur",
+    "Autre",
+  ];
+  const etatCivileChoices = [
+    { value: "m", label: "Marié" },
+    { value: "c", label: "Célibataire" },
+  ];
+  const langues = ["Français", "Anglais", "Swahili"];
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<DeathCertificateFormInputs>();
 
+  const [loading, setLoading] = useState(false);
+
   const onSubmit: SubmitHandler<DeathCertificateFormInputs> = (data) => {
-    console.log(data);
-    // Handle form submission logic
+    const token = sessionStorage.getItem("access");
+    if (!token) {
+      toast.error("Session expirée, veuillez vous reconnecter.");
+      return window.location.reload();
+    }
+
+    setLoading(true);
+    axiosCon
+      .post("/app/create_actedesc", {
+        token,
+        new_acte_desc: {
+          cert_desc_id: data.cert_desc_id,
+          numeros_volume: data.numeros_volume,
+          nom_declarant: data.nom_declarant,
+          qualite_declarant: data.qualite_declarant,
+          profession_declarant: data.profession_declarant,
+          residence_principale: data.residence_principale,
+          residence_temporaire: data.residence_temporaire || "",
+          nationalite: data.nationalite,
+          etat_civile: data.etat_civile,
+          conjoint_identite: data.conjoint_identite || "",
+          nom_complet_pere: data.nom_complet_pere,
+          nom_complet_mere: data.nom_complet_mere,
+          langue_redaction: data.langue_redaction,
+        },
+      })
+      .then((res) => {
+        toast.success("Acte de décès ajouté avec succès !");
+        reset();
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("Erreur lors de l'ajout de l'acte de décès.");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -43,13 +91,13 @@ export default function DeathCertificateForm() {
       </h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="form-control">
-          <label className="label">N° Déclaration</label>
+          <label className="label">ID Certificat</label>
           <input
-            type="text"
-            {...register("declarationNumber", { required: true })}
-            className="input "
+            type="number"
+            {...register("cert_desc_id", { required: true })}
+            className="input input-bordered w-full"
           />
-          {errors.declarationNumber && (
+          {errors.cert_desc_id && (
             <span className="text-red-500">Ce champ est requis</span>
           )}
         </div>
@@ -58,98 +106,51 @@ export default function DeathCertificateForm() {
           <label className="label">Volume</label>
           <input
             type="text"
-            {...register("volume", { required: true })}
-            className="input  input-bordered w-full "
+            {...register("numeros_volume", { required: true })}
+            className="input input-bordered w-full"
           />
-          {errors.volume && (
+          {errors.numeros_volume && (
             <span className="text-red-500">Ce champ est requis</span>
           )}
         </div>
 
         <div className="form-control">
-          <label className="label">N° Acte de Décès</label>
+          <label className="label">Nom du Déclarant</label>
           <input
             type="text"
-            {...register("deathNumber", { required: true })}
-            className="input "
+            {...register("nom_declarant", { required: true })}
+            className="input input-bordered w-full"
           />
-          {errors.deathNumber && (
-            <span className="text-red-500">Ce champ est requis</span>
-          )}
-        </div>
-
-        <div className="form-control grid grid-cols-3 gap-2">
-          <label className="label col-span-3">Date de Décès</label>
-          <input
-            type="text"
-            placeholder="Année"
-            {...register("deathYear", { required: true })}
-            className="input "
-          />
-          <input
-            type="text"
-            placeholder="Mois"
-            {...register("deathMonth", { required: true })}
-            className="input "
-          />
-          <input
-            type="text"
-            placeholder="Jour"
-            {...register("deathDay", { required: true })}
-            className="input "
-          />
-          {(errors.deathYear || errors.deathMonth || errors.deathDay) && (
+          {errors.nom_declarant && (
             <span className="text-red-500">Ce champ est requis</span>
           )}
         </div>
 
         <div className="form-control">
-          <label className="label">Lieu de Décès</label>
+          <label className="label">Qualité du Déclarant</label>
           <input
             type="text"
-            {...register("deathPlace", { required: true })}
-            className="input "
+            {...register("qualite_declarant", { required: true })}
+            className="input input-bordered w-full"
           />
-          {errors.deathPlace && (
+          {errors.qualite_declarant && (
             <span className="text-red-500">Ce champ est requis</span>
           )}
         </div>
 
         <div className="form-control">
-          <label className="label">Nom et Prénom</label>
-          <input
-            type="text"
-            {...register("name", { required: true })}
-            className="input "
-          />
-          {errors.name && (
-            <span className="text-red-500">Ce champ est requis</span>
-          )}
-        </div>
-
-        <div className="form-control">
-          <label className="label">Sexe</label>
+          <label className="label">Profession du Déclarant</label>
           <select
-            {...register("gender", { required: true })}
-            className="select select-bordered"
+            {...register("profession_declarant", { required: true })}
+            className="input input-bordered w-full"
           >
-            <option value="">Sélectionnez le sexe</option>
-            <option value="M">Masculin</option>
-            <option value="F">Féminin</option>
+            {professions.map((profession) => (
+              <option key={profession} value={profession}>
+                {profession}
+              </option>
+            ))}
           </select>
-          {errors.gender && (
-            <span className="text-red-500">Ce champ est requis</span>
-          )}
-        </div>
-
-        <div className="form-control">
-          <label className="label">Profession</label>
-          <input
-            type="text"
-            {...register("profession", { required: true })}
-            className="input "
-          />
-          {errors.profession && (
+          {errors.profession_declarant && (
             <span className="text-red-500">Ce champ est requis</span>
           )}
         </div>
@@ -158,20 +159,20 @@ export default function DeathCertificateForm() {
           <label className="label">Résidence Principale</label>
           <input
             type="text"
-            {...register("mainResidence", { required: true })}
-            className="input "
+            {...register("residence_principale", { required: true })}
+            className="input input-bordered w-full"
           />
-          {errors.mainResidence && (
+          {errors.residence_principale && (
             <span className="text-red-500">Ce champ est requis</span>
           )}
         </div>
 
         <div className="form-control">
-          <label className="label">Résidence Temporaire</label>
+          <label className="label">Résidence Temporaire (facultative)</label>
           <input
             type="text"
-            {...register("temporaryResidence")}
-            className="input "
+            {...register("residence_temporaire")}
+            className="input input-bordered w-full"
           />
         </div>
 
@@ -179,58 +180,48 @@ export default function DeathCertificateForm() {
           <label className="label">Nationalité</label>
           <input
             type="text"
-            {...register("nationality", { required: true })}
-            className="input "
+            {...register("nationalite", { required: true })}
+            className="input input-bordered w-full"
           />
-          {errors.nationality && (
+          {errors.nationalite && (
             <span className="text-red-500">Ce champ est requis</span>
           )}
         </div>
 
         <div className="form-control">
-          <label className="label">Statut au Moment du Décès</label>
-          <input
-            type="text"
-            {...register("statusAtDeath", { required: true })}
-            className="input "
-          />
-          {errors.statusAtDeath && (
+          <label className="label">Statut au Décès</label>
+          <select
+            {...register("etat_civile", { required: true })}
+            className="input input-bordered w-full"
+          >
+            {etatCivileChoices.map((etat) => (
+              <option key={etat.value} value={etat.value}>
+                {etat.label}
+              </option>
+            ))}
+          </select>
+          {errors.etat_civile && (
             <span className="text-red-500">Ce champ est requis</span>
           )}
         </div>
 
         <div className="form-control">
-          <label className="label">Date de Naissance</label>
+          <label className="label">Identité du Conjoint (facultatif)</label>
           <input
             type="text"
-            {...register("birthDate", { required: true })}
-            className="input "
+            {...register("conjoint_identite")}
+            className="input input-bordered w-full"
           />
-          {errors.birthDate && (
-            <span className="text-red-500">Ce champ est requis</span>
-          )}
-        </div>
-
-        <div className="form-control">
-          <label className="label">Lieu de Naissance</label>
-          <input
-            type="text"
-            {...register("birthPlace", { required: true })}
-            className="input "
-          />
-          {errors.birthPlace && (
-            <span className="text-red-500">Ce champ est requis</span>
-          )}
         </div>
 
         <div className="form-control">
           <label className="label">Nom du Père</label>
           <input
             type="text"
-            {...register("birthFather", { required: true })}
-            className="input "
+            {...register("nom_complet_pere", { required: true })}
+            className="input input-bordered w-full"
           />
-          {errors.birthFather && (
+          {errors.nom_complet_pere && (
             <span className="text-red-500">Ce champ est requis</span>
           )}
         </div>
@@ -239,17 +230,38 @@ export default function DeathCertificateForm() {
           <label className="label">Nom de la Mère</label>
           <input
             type="text"
-            {...register("birthMother", { required: true })}
-            className="input "
+            {...register("nom_complet_mere", { required: true })}
+            className="input input-bordered w-full"
           />
-          {errors.birthMother && (
+          {errors.nom_complet_mere && (
+            <span className="text-red-500">Ce champ est requis</span>
+          )}
+        </div>
+
+        <div className="form-control">
+          <label className="label">Langue de Rédaction</label>
+          <select
+            {...register("langue_redaction", { required: true })}
+            className="input input-bordered w-full"
+          >
+            {langues.map((langue) => (
+              <option key={langue} value={langue}>
+                {langue}
+              </option>
+            ))}
+          </select>
+          {errors.langue_redaction && (
             <span className="text-red-500">Ce champ est requis</span>
           )}
         </div>
 
         <div className="form-control mt-6">
-          <button type="submit" className="btn btn-primary">
-            Soumettre
+          <button
+            type="submit"
+            className={`btn btn-primary ${loading ? "loading" : ""}`}
+            disabled={loading}
+          >
+            {loading ? "Chargement..." : "Soumettre"}
           </button>
         </div>
       </form>

@@ -16,6 +16,7 @@ export default function DeathCertificateCard({
   deathDate,
   deathPlace,
 }: DeathCertificateCardProps) {
+  const token = sessionStorage.getItem("access");
   return (
     <div className="card w-full bg- bg-white shadow-md p-4 mb-4">
       <h3 className="text-xl font-semibold">{name}</h3>
@@ -23,7 +24,7 @@ export default function DeathCertificateCard({
       <p className="text-gray-600">Date de Décès: {deathDate}</p>
       <p className="text-gray-600">Lieu de Décès: {deathPlace}</p>
       <Link
-        href={`/dashboard/acte-de-deces/${id}`}
+        href={`/dashboard/acte-de-deces/${id}?token=${token}`}
         className="btn btn-primary mt-2"
       >
         Voir plus

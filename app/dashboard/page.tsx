@@ -5,6 +5,7 @@ import Navbar from "@/components/dashboard/Navbar";
 import Table from "@/components/dashboard/Table";
 import TableCommune from "@/components/dashboard/TableCommune";
 import UserName from "@/components/dashboard/UserName";
+import axiosCon from "@/libs/Axios";
 import { storeType } from "@/types/store";
 import React from "react";
 import {
@@ -20,6 +21,12 @@ type Props = {};
 export default function page({}: Props) {
   const { userRole } = useSelector((state: storeType) => state.user);
   console.log(userRole);
+  const token = sessionStorage.getItem("access");
+
+  const getTable = async (api: string) => {
+    const res = await axiosCon.get(api);
+    return res.data;
+  };
   return (
     <div className="m-auto w-full  mx-3">
       <Navbar name="Dashboard" path={"/dashboard"} />
@@ -29,10 +36,14 @@ export default function page({}: Props) {
             <Card
               lien="/dashboard/certificat-de-naissance"
               icon={<AiFillBuild className="text-3xl text-gray-900" />}
+              datafn={() => getTable(`/app/get_cn_per_hosp/${token}`)}
               label="Certificat de naissance"
             />
             <Card
               lien="/dashboard/certificat-de-deces"
+              datafn={() =>
+                getTable(`/app/get_certi_desc_par_hopital/${token}`)
+              }
               icon={<AiFillFile className="text-3xl text-red-400" />}
               label="Certificat de decès"
             />
@@ -45,9 +56,13 @@ export default function page({}: Props) {
               lien="/dashboard/acte-de-naissance"
               icon={<AiFillHeart className="text-3xl text-secondary-100" />}
               label="Acte de naissance"
+              datafn={() =>
+                getTable(`/app/get_acte_naiss_par_commune/${token}`)
+              }
             />
 
             <Card
+              datafn={() => getTable(`/app/get_acte_desc_par_commune/${token}`)}
               lien="/dashboard/acte-de-deces"
               icon={<AiFillCalendar className="text-3xl text-yellow-400" />}
               label="Acte de decès"

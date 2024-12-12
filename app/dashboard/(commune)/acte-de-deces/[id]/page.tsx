@@ -1,17 +1,33 @@
 // page.tsx
 
-"use client";
 import React from "react";
 import DeathCertificate from "./death";
-import { fakeDeathData } from "@/mockdata";
-import { PDFViewer } from "@react-pdf/renderer";
 
-export default function ActePage() {
+import { PDFViewer } from "@react-pdf/renderer";
+import { base_url } from "@/data/url";
+import { DeathCertificateData } from "@/app/dashboard/(hopital)/certificat-de-naissance/page";
+import Doc from "./Doc";
+
+type Props = {
+  params: {
+    id: number;
+  };
+  searchParams: {
+    token: string;
+  };
+};
+
+export default async function ActePage({ params }: Props) {
+  const getAdresse = await fetch(
+    `${base_url}/app/print_acte_desc/${params.id}`
+  );
+
+  const certificat: DeathCertificateData = await getAdresse.json();
+  console.log(certificat);
+
   return (
     <div style={{ height: "100vh" }}>
-      <PDFViewer width="100%" height="100%">
-        <DeathCertificate data={fakeDeathData} />
-      </PDFViewer>
+      <Doc certificat={certificat} />
     </div>
   );
 }

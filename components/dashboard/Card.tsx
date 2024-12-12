@@ -4,11 +4,13 @@ import axiosCon from "@/libs/Axios";
 import { AiOutlineMan, AiOutlineWoman } from "react-icons/ai";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 type Props = {
   lien: string;
   label: string;
   icon: any;
+  datafn?: () => Promise<any>;
 };
 
 type DataRes = {
@@ -18,19 +20,11 @@ type DataRes = {
   total: number;
 };
 
-export default function Card({ lien, icon, label }: Props) {
-  const [data, setData] = useState<DataRes>();
-
-  useEffect(() => {
-    axiosCon
-      .get("/stat/voir_cert")
-      .then((res) => {
-        console.log(res.data.cert_naissance);
-        setData(res.data.cert_naissance[0]);
-      })
-
-      .catch((e) => console.log(e));
-  }, []);
+export default function Card({ lien, icon, label, datafn }: Props) {
+  const { data, error, isLoading } = useQuery({
+    queryKey: [label],
+    queryFn: datafn,
+  }) as { data: []; error: Error; isLoading: boolean };
   return (
     <Link
       href={lien}
@@ -41,22 +35,9 @@ export default function Card({ lien, icon, label }: Props) {
       </div>
       <div>
         <div className="flex justify-between">
-          <h2 className="font-extrabold text-2xl">{data?.total}</h2>
-          <div className="flex gap-3">
-            <div className="flex gap-2 items-center">
-              <AiOutlineMan size={13} />
-              <p className="text-xs">{data?.garçon}</p>
-            </div>
-            <div className="flex gap-2 items-center">
-              <AiOutlineWoman size={13} />
-              <p className="text-xs">{data?.fille}</p>
-            </div>
-          </div>
+          <h2 className="font-extrabold text-2xl">{data?.length}</h2>
         </div>
         <p>{label}</p>
-        <small>
-          {data?.date ? new Date(data.date).toLocaleDateString() : ""}
-        </small>
       </div>
     </Link>
   );
