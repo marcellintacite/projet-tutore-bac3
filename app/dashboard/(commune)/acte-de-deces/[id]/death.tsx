@@ -8,12 +8,13 @@ import {
   StyleSheet,
   Image,
   Font,
+  PDFViewer,
 } from "@react-pdf/renderer";
-import { ResponseActeNaissance } from "@/types/commune";
+import logo from "../../../../../public/assets/illustration/jpr.png";
 import { base_url } from "@/data/url";
 import { DeathCertificateData } from "@/app/dashboard/(hopital)/certificat-de-naissance/page";
 
-const ExtraitActeDeces = ({ data }: { data: DeathCertificateData }) => {
+const Quixote = ({ data }: { data: DeathCertificateData }) => {
   const dateOption = {
     weekday: "long",
     year: "numeric",
@@ -22,119 +23,106 @@ const ExtraitActeDeces = ({ data }: { data: DeathCertificateData }) => {
   };
 
   const link = base_url + data.acte.cod_qr;
-
+  console.log("Lient ", link);
   return (
     <Document
-      title={`Extrait de décès de ${data.Certificat.nom_defunt} ${data.Certificat.prenom_defunt}`}
+      title={`
+    Acte de deces de ${data.Certificat.nom_defunt} ${data.Certificat.post_nom_defunt}     
+    `}
     >
       <Page style={styles.body}>
-        <View style={styles.outerBorder}>
-          <View style={styles.innerBorder}>
-            <View style={styles.headerContainer}>
-              <Image
-                src={
-                  window.location.origin + "/assets/illustration/drapeau.png"
-                }
-                style={styles.image}
-              />
-              <View style={styles.headerTextContainer}>
-                <Text style={styles.title}>
-                  REPUBLIQUE DEMOCRATIQUE DU CONGO
-                </Text>
-                <Text style={styles.subtitle}>
-                  PROVINCE {data.province.denom.toUpperCase()}
-                </Text>
-                <Text style={styles.subtitle}>
-                  MAIRIE DE {data.commune.denom.toUpperCase()}
-                </Text>
-                <Text style={styles.subtitle}>
-                  COMMUNE DE {data.commune.denom.toUpperCase()}
-                </Text>
-              </View>
-              <Image
-                src={window.location.origin + "/assets/illustration/jpr.png"}
-                style={styles.image}
-              />
-            </View>
-
-            <View style={styles.titleSection}>
-              <Text style={styles.officeText}>OFFICE DE L'ETAT CIVIL</Text>
-              <Text style={styles.extraitTitle}>
-                EXTRAIT D'ACTE DE DECES N° {data.acte.id}
+        <View style={styles.contentContainer}>
+          <View style={styles.congo}>
+            <Image
+              src={window.location.origin + "/assets/illustration/drapeau.png"}
+              style={styles.image}
+            />
+            <View style={styles.head}>
+              <Text style={styles.title}>REPUBLIQUE DEMOCRATIQUE DU CONGO</Text>
+              <Text style={styles.sub}>
+                PROVINCE {data.province.denom.toUpperCase()}
+              </Text>
+              <Text style={styles.sub}>
+                MAIRIE DE {data.commune.denom.toUpperCase()}
+              </Text>
+              <Text style={styles.sub}>
+                COMMUNE DE (D') {data.commune.denom.toUpperCase()}
               </Text>
             </View>
-
-            <View style={styles.contentSection}>
-              <Text style={styles.contentText}>
-                L'an{" "}
-                <Text style={styles.bold}>
-                  {new Date(data.Certificat.date_desc).getFullYear()}
-                </Text>
-                , le{" "}
-                <Text style={styles.bold}>
-                  {new Date(data.Certificat.date_desc).toLocaleDateString(
-                    "fr-FR",
-                    // @ts-ignore
-                    dateOption
-                  )}
-                </Text>
-                , est décédé(e) à{" "}
-                <Text style={styles.bold}>{data.terriville.denom}</Text> :
-              </Text>
-              <Text style={styles.defuntName}>
-                <Text style={styles.bold}>
-                  {data.Certificat.nom_defunt} {data.Certificat.post_nom_defunt}{" "}
-                  {data.Certificat.prenom_defunt}
-                </Text>
-                , de sexe{" "}
-                <Text style={styles.bold}>
-                  {data.Certificat.sexe_defunt === "m" ? "masculin" : "féminin"}
-                </Text>
-                , né(e) le{" "}
-                <Text style={styles.bold}>
-                  {new Date(
-                    data.Certificat.date_naissance_defunt
-                    // @ts-ignore
-                  ).toLocaleDateString("fr-FR", dateOption)}
-                </Text>
-                .
-              </Text>
-              <Text style={styles.contentText}>
-                Cause :{" "}
-                <Text style={styles.bold}>{data.Certificat.cause_desc}</Text>
-              </Text>
-              <Text style={styles.contentText}>
-                Certificat médical délivré par : Dr.{" "}
-                <Text style={styles.bold}>
-                  {data.Certificat.medecin_traitant}
-                </Text>
-              </Text>
-            </View>
-
-            <View style={styles.footerSection}>
-              <Text style={styles.footerText}>
-                Fait à <Text style={styles.bold}>{data.commune.denom}</Text>, le{" "}
-                <Text style={styles.bold}>
-                  {new Date(data.Certificat.date_desc).toLocaleDateString(
-                    "fr-FR",
-                    // @ts-ignore
-                    dateOption
-                  )}
-                </Text>
-                .
-              </Text>
-              <Text style={styles.signatureText}>
-                L'Officier de l'Etat Civil
-              </Text>
-              <Text style={styles.signatureText}>{data.commune.nom_bour}</Text>
-            </View>
-
-            {data.acte.cod_qr && (
-              <View style={styles.qrCodeSection}>
-                <Image style={styles.qrCodeImage} src={link} source={link} />
-              </View>
-            )}
+            <Image
+              src={window.location.origin + "/assets/illustration/jpr.png"}
+              style={styles.image}
+            />
           </View>
+
+          <View style={styles.content}>
+            <Text style={styles.normal}>OFFICE DE L'ETAT CIVIL</Text>
+          </View>
+
+          <View style={styles.heade}>
+            <Text style={styles.titleUndeline}>
+              ACTE DE DECES N° {data.acte.id}
+            </Text>
+          </View>
+          <View>
+            <Text style={styles.normal}>
+              Je soussigné, {data.commune.nom_bour} officier de l'Etat Civil et
+              Bourgoumestre de la Commune de {data.commune.denom}, ville de{" "}
+              {data.terriville.denom}, atteste par la présente que le (la)
+              nommé(e) : {data.Certificat.nom_defunt}{" "}
+              {data.Certificat.prenom_defunt} {data.Certificat.post_nom_defunt},
+              né(e) le{" "}
+              {new Date(
+                data.Certificat.date_naissance_defunt
+              ).toLocaleDateString("fr-FR", dateOption)}{" "}
+              à {data.Certificat.lieu_naissance}, est décédé(e) le{" "}
+              {new Date(data.Certificat.date_desc).toLocaleDateString(
+                "fr-FR",
+                dateOption
+              )}
+              .
+            </Text>
+            <Text style={styles.normal}>
+              Il (elle) était né(e) de {data.acte.nom_complet_pere} et de{" "}
+              {data.acte.nom_complet_mere}.
+            </Text>
+            <View style={styles.flex}>
+              <Text style={styles.normal}>Profession :</Text>
+              <Text style={styles.normalBold}>
+                {data.Certificat.profession_defunt}
+              </Text>
+            </View>
+            <View style={styles.flex}>
+              <Text style={styles.normal}>Cause du décès :</Text>
+              <Text style={styles.normalBold}>
+                {data.Certificat.cause_desc}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.content}>
+            <Text style={styles.normal}>
+              J'atteste en outre que les renseignements sont conformes aux
+              inscriptions figurant dans les pièces d'identité de l'intéressé ou
+              de ses parents.
+            </Text>
+          </View>
+
+          <View style={styles.footer}>
+            <Text style={styles.normale}>
+              Fait à {data.commune.denom}, le{" "}
+              {new Date().toLocaleDateString("fr-FR", dateOption)}
+            </Text>
+            <Text style={styles.normal}>Pour extrait certifié conforme.</Text>
+          </View>
+
+          {data.acte.cod_qr && (
+            <View style={styles.code}>
+              <View style={styles.imgContainer}>
+                <Text style={styles.normalBold}>Code QR</Text>
+                <Image style={styles.imageQrcode} src={link} source={link} />
+              </View>
+            </View>
+          )}
         </View>
       </Page>
     </Document>
@@ -148,106 +136,174 @@ Font.register({
 
 const styles = StyleSheet.create({
   body: {
-    height: "full",
-    padding: 0,
-    margin: 0,
-    fontFamily: "Oswald",
+    paddingTop: 25,
+    paddingBottom: 65,
+    paddingHorizontal: 25,
+    position: "relative",
   },
-  outerBorder: {
-    border: "10px solid #cf3e3e",
-    padding: 5,
+  contentContainer: {
+    width: "100%",
+    height: "100%",
+    border: "5px solid #cf3e3e",
+    padding: 14,
   },
-  innerBorder: {
-    border: "5px solid #000",
-    padding: 10,
-  },
-  headerContainer: {
+  congo: {
+    padding: 15,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderBottom: "2px solid #000",
-    paddingBottom: 10,
-    marginBottom: 10,
-    fontFamily: "Oswald",
-  },
-  image: {
-    width: 60,
-  },
-  headerTextContainer: {
-    textAlign: "center",
-    fontFamily: "Oswald",
+    borderBottomWidth: 1,
+    borderBottomColor: "#000",
+    borderBottomStyle: "solid",
   },
   title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-    fontFamily: "Oswald",
-  },
-  subtitle: {
-    fontSize: 14,
-    fontWeight: "bold",
-    textAlign: "center",
-    fontFamily: "Oswald",
-  },
-  titleSection: {
-    textAlign: "center",
-    marginBottom: 15,
-    fontFamily: "Oswald",
-  },
-  officeText: {
-    fontSize: 14,
-    fontWeight: "normal",
-    textAlign: "center",
-    fontFamily: "Oswald",
-  },
-  extraitTitle: {
     fontSize: 16,
+    textAlign: "center",
+    fontFamily: "Oswald",
+    fontWeight: "bold",
+  },
+  sub: {
+    color: "#000",
+    fontWeight: "extrabold",
+    textAlign: "center",
+    fontFamily: "Oswald",
+    fontSize: 14,
+  },
+  head: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 2,
+  },
+  heade: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 2,
+    marginVertical: 10,
+  },
+  titleUndeline: {
+    fontSize: 16,
+    textAlign: "center",
+    fontFamily: "Oswald",
     fontWeight: "bold",
     textDecoration: "underline",
-    fontFamily: "Oswald",
   },
-  contentSection: {
-    marginBottom: 15,
+
+  flex: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 15,
+    marginVertical: 3,
   },
-  contentText: {
-    fontSize: 12,
-    marginBottom: 5,
-    letterSpacing: 1,
-    fontFamily: "Oswald",
-  },
-  defuntName: {
+
+  author: {
     fontSize: 14,
-    fontWeight: "bold",
-    marginBottom: 10,
-    fontFamily: "Oswald",
-  },
-  footerSection: {
-    marginTop: 20,
+    fontFamily: "Times-Roman",
     textAlign: "center",
+    marginBottom: 8,
+    textDecoration: "underline",
   },
-  footerText: {
+
+  text: {
+    margin: 12,
+    fontSize: 15,
+    textAlign: "justify",
+    fontFamily: "Times-Roman",
+  },
+  image: {
+    width: 80,
+  },
+  header: {
     fontSize: 12,
-    marginBottom: 5,
+
+    textAlign: "center",
+    color: "#7d7879",
+  },
+  pageNumber: {
+    position: "absolute",
+    fontSize: 12,
+    bottom: 30,
+    left: 0,
+    right: 0,
+    textAlign: "center",
+    color: "grey",
+  },
+
+  content: {
+    marginTop: 40,
+  },
+  footer: {
+    marginTop: 40,
+  },
+  sceau: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 35,
+  },
+
+  normal: {
+    fontSize: 14,
+    textAlign: "justify",
+    fontFamily: "Times-Roman",
+    marginBottom: 3,
+  },
+  normale: {
+    fontSize: 14,
+    textAlign: "right",
+    fontFamily: "Times-Roman",
+    marginBottom: 3,
+  },
+  normalBold: {
+    fontSize: 14,
+    textAlign: "center",
     fontFamily: "Oswald",
-  },
-  signatureText: {
-    fontSize: 12,
     fontWeight: "bold",
   },
-  qrCodeSection: {
+  suite: {
+    fontSize: 14,
+    textAlign: "justify",
+    fontFamily: "Times-Roman",
+    marginBottom: 10,
+  },
+
+  foot: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 50,
+    backgroundColor: "#eaf4ff",
+    padding: 10,
+  },
+  code: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 15,
+    flexDirection: "column",
+    marginTop: 20,
   },
-  qrCodeImage: {
-    width: 80,
-    height: 80,
+  imgContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    padding: 5,
+    border: "1px solid #000",
+    borderRadius: 5,
+    width: 200,
   },
-  bold: {
-    fontWeight: "bold",
+  imageQrcode: {
+    width: 60,
+    height: 60,
+    marginTop: 5,
+    marginBottom: 5,
   },
 });
 
-export default ExtraitActeDeces;
+export default Quixote;

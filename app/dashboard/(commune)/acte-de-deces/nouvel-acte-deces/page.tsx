@@ -5,6 +5,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios"; // Ensure axios is set up correctly
 import toast from "react-hot-toast";
 import axiosCon from "@/libs/Axios";
+import { base_url } from "@/data/url";
+import { useQuery } from "@tanstack/react-query";
 type DeathCertificateFormInputs = {
   cert_desc_id: number;
   numeros_volume: string;
@@ -21,6 +23,11 @@ type DeathCertificateFormInputs = {
   langue_redaction: "Français" | "Anglais" | "Swahili";
 };
 
+const getTable = async () => {
+  const token = sessionStorage.getItem("access");
+  const res = await axiosCon.get(`${base_url}/app/get_cert_dec_non_cert`);
+  return res.data;
+};
 export default function DeathCertificateForm() {
   const professions = [
     "Médecin",
@@ -34,7 +41,10 @@ export default function DeathCertificateForm() {
     { value: "c", label: "Célibataire" },
   ];
   const langues = ["Français", "Anglais", "Swahili"];
-
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["certificat"],
+    queryFn: getTable,
+  }) as { data: []; error: Error; isLoading: boolean };
   const {
     register,
     handleSubmit,
@@ -91,15 +101,28 @@ export default function DeathCertificateForm() {
       </h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="form-control">
-          <label className="label">ID Certificat</label>
-          <input
-            type="number"
-            {...register("cert_desc_id", { required: true })}
-            className="input input-bordered w-full"
-          />
-          {errors.cert_desc_id && (
-            <span className="text-red-500">Ce champ est requis</span>
-          )}
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Certificat de naissance</span>
+            </label>
+            <select
+              className="select w-full max-w-xs"
+              required
+              {...register("cert_desc_id", {
+                required: "Ce champ est requis",
+              })}
+              name="certNais_id"
+            >
+              {data?.map((item: any) => (
+                <option key={item.id} value={item.id}>
+                  {item.nom_defunt} {item.post_nom_defunt}
+                </option>
+              ))}
+            </select>
+            {errors.cert_desc_id && (
+              <span className="text-red-500">Ce champ est requis</span>
+            )}
+          </div>
         </div>
 
         <div className="form-control">

@@ -1,8 +1,10 @@
 "use client";
 import CustomInput from "@/app/dashboard/(hopital)/certificat-de-naissance/components/Input";
+import { base_url } from "@/data/url";
 import axiosCon from "@/libs/Axios";
 import img from "@/public/assets/illustration/jpr.png";
 import { storeType } from "@/types/store";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -21,10 +23,18 @@ type InputesActe = {
   certNais_id: string;
   commune: number;
 };
-
+const getTable = async () => {
+  const token = sessionStorage.getItem("access");
+  const res = await axiosCon.get(`${base_url}/app/get_cert_nais_non_acte`);
+  return res.data;
+};
 export default function AjouterActe({}: Props) {
   const { userId } = useSelector((state: storeType) => state.user);
-
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["certificat"],
+    queryFn: getTable,
+  }) as { data: []; error: Error; isLoading: boolean };
+  console.log(data);
   const {
     register,
     handleSubmit,
@@ -119,13 +129,30 @@ export default function AjouterActe({}: Props) {
             placeholder="Français"
             type="text"
           />
-          <CustomInput
-            register={register}
-            name="certNais_id"
-            label="ID du certificat de naissance"
-            placeholder="1"
-            type="text"
-          />
+
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Certificat de naissance</span>
+            </label>
+            <select
+              className="select w-full max-w-xs"
+              required
+              {...register("certNais_id", {
+                required: "Ce champ est requis",
+              })}
+              name="certNais_id"
+            >
+              {data?.map((item: any) => (
+                <option key={item.id} value={item.id}>
+                  {item.nom_enfant} {item.prenom_enfant}
+                </option>
+              ))}
+            </select>
+
+            {errors.certNais_id && (
+              <span className="text-red-500">{errors.certNais_id.message}</span>
+            )}
+          </div>
           <button className="btn btn-primary mt-5" type="submit">
             Ajouter
           </button>
