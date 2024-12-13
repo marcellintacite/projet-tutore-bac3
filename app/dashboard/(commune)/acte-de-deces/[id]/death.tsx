@@ -74,10 +74,12 @@ const Quixote = ({ data }: { data: DeathCertificateData }) => {
               né(e) le{" "}
               {new Date(
                 data.Certificat.date_naissance_defunt
+                // @ts-ignore
               ).toLocaleDateString("fr-FR", dateOption)}{" "}
               à {data.Certificat.lieu_naissance}, est décédé(e) le{" "}
               {new Date(data.Certificat.date_desc).toLocaleDateString(
                 "fr-FR",
+                // @ts-ignore
                 dateOption
               )}
               .
@@ -109,7 +111,7 @@ const Quixote = ({ data }: { data: DeathCertificateData }) => {
 
           <View style={styles.footer}>
             <Text style={styles.normale}>
-              Fait à {data.commune.denom}, le{" "}
+              Fait à {data.commune.denom}, le {/* @ts-ignore */}
               {new Date().toLocaleDateString("fr-FR", dateOption)}
             </Text>
             <Text style={styles.normal}>Pour extrait certifié conforme.</Text>
