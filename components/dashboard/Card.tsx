@@ -1,7 +1,5 @@
 "use client";
 
-import axiosCon from "@/libs/Axios";
-import { AiOutlineMan, AiOutlineWoman } from "react-icons/ai";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
