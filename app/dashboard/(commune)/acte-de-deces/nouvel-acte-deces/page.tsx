@@ -49,6 +49,7 @@ export default function DeathCertificateForm() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
     reset,
   } = useForm<DeathCertificateFormInputs>();
 
@@ -103,14 +104,12 @@ export default function DeathCertificateForm() {
         <div className="form-control">
           <div className="form-control w-full">
             <label className="label">
-              <span className="label-text">Certificat de naissance</span>
+              <span className="label-text">Certificat de décès</span>
             </label>
             <select
               className="select w-full max-w-xs"
               required
-              {...register("cert_desc_id", {
-                required: "Ce champ est requis",
-              })}
+              onChange={(e) => setValue("cert_desc_id", Number(e.target.value))}
               name="certNais_id"
             >
               {data?.map((item: any) => (

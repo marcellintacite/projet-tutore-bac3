@@ -22,7 +22,7 @@ const Quixote = ({ data }: { data: DeathCertificateData }) => {
     day: "numeric",
   };
 
-  const link = base_url + data.acte.cod_qr;
+  const link = base_url + data.acte?.cod_qr || "";
   console.log("Lient ", link);
   return (
     <Document
