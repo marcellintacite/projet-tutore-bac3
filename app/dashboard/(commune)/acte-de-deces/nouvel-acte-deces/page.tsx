@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import axios from "axios"; // Ensure axios is set up correctly
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import toast from "react-hot-toast";
 import axiosCon from "@/libs/Axios";
 import { base_url } from "@/data/url";
-import { useQuery } from "@tanstack/react-query";
+
 type DeathCertificateFormInputs = {
   cert_desc_id: number;
   numeros_volume: string;
@@ -16,18 +17,20 @@ type DeathCertificateFormInputs = {
   residence_principale: string;
   residence_temporaire?: string;
   nationalite: string;
-  etat_civile: "m" | "c"; // "m" for Marié, "c" for Célibataire
+  etat_civile: "m" | "c";
   conjoint_identite?: string;
   nom_complet_pere: string;
   nom_complet_mere: string;
   langue_redaction: "Français" | "Anglais" | "Swahili";
 };
 
+// Fetch certificates data
 const getTable = async () => {
   const token = sessionStorage.getItem("access");
   const res = await axiosCon.get(`${base_url}/app/get_cert_dec_non_cert`);
   return res.data;
 };
+
 export default function DeathCertificateForm() {
   const professions = [
     "Médecin",
@@ -41,21 +44,24 @@ export default function DeathCertificateForm() {
     { value: "c", label: "Célibataire" },
   ];
   const langues = ["Français", "Anglais", "Swahili"];
-  const { data, error, isLoading } = useQuery({
+
+  // React Query for fetching certificate data
+  const { data, isLoading, error } = useQuery({
     queryKey: ["certificat"],
     queryFn: getTable,
-  }) as { data: []; error: Error; isLoading: boolean };
+  });
+
+  // React Hook Form
   const {
     register,
     handleSubmit,
-    formState: { errors },
     setValue,
+    formState: { errors },
     reset,
   } = useForm<DeathCertificateFormInputs>();
-
   const [loading, setLoading] = useState(false);
 
-  const onSubmit: SubmitHandler<DeathCertificateFormInputs> = (data) => {
+  const onSubmit: SubmitHandler<DeathCertificateFormInputs> = (formData) => {
     const token = sessionStorage.getItem("access");
     if (!token) {
       toast.error("Session expirée, veuillez vous reconnecter.");
@@ -66,23 +72,9 @@ export default function DeathCertificateForm() {
     axiosCon
       .post("/app/create_actedesc", {
         token,
-        new_acte_desc: {
-          cert_desc_id: data.cert_desc_id,
-          numeros_volume: data.numeros_volume,
-          nom_declarant: data.nom_declarant,
-          qualite_declarant: data.qualite_declarant,
-          profession_declarant: data.profession_declarant,
-          residence_principale: data.residence_principale,
-          residence_temporaire: data.residence_temporaire || "",
-          nationalite: data.nationalite,
-          etat_civile: data.etat_civile,
-          conjoint_identite: data.conjoint_identite || "",
-          nom_complet_pere: data.nom_complet_pere,
-          nom_complet_mere: data.nom_complet_mere,
-          langue_redaction: data.langue_redaction,
-        },
+        new_acte_desc: formData,
       })
-      .then((res) => {
+      .then(() => {
         toast.success("Acte de décès ajouté avec succès !");
         reset();
       })
@@ -90,9 +82,7 @@ export default function DeathCertificateForm() {
         console.error(err);
         toast.error("Erreur lors de l'ajout de l'acte de décès.");
       })
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -100,30 +90,34 @@ export default function DeathCertificateForm() {
       <h2 className="text-2xl font-bold mb-6 text-center">
         Formulaire d'Acte de Décès
       </h2>
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {/* Certificate Selection */}
         <div className="form-control">
-          <div className="form-control w-full">
-            <label className="label">
-              <span className="label-text">Certificat de décès</span>
-            </label>
-            <select
-              className="select w-full max-w-xs"
-              required
-              onChange={(e) => setValue("cert_desc_id", Number(e.target.value))}
-              name="certNais_id"
-            >
-              {data?.map((item: any) => (
-                <option key={item.id} value={item.id}>
-                  {item.nom_defunt} {item.post_nom_defunt}
-                </option>
-              ))}
-            </select>
-            {errors.cert_desc_id && (
-              <span className="text-red-500">Ce champ est requis</span>
-            )}
-          </div>
+          <label className="label">
+            <span className="label-text">Certificat de décès</span>
+          </label>
+          <select
+            className="select w-full max-w-xs"
+            required
+            onChange={(e) => setValue("cert_desc_id", Number(e.target.value))}
+            defaultValue=""
+          >
+            <option value="" disabled>
+              Sélectionnez un certificat
+            </option>
+            {data?.map((item: any) => (
+              <option key={item.id} value={item.id}>
+                {item.nom_defunt} {item.post_nom_defunt}
+              </option>
+            ))}
+          </select>
+          {errors.cert_desc_id && (
+            <span className="text-red-500">Ce champ est requis</span>
+          )}
         </div>
 
+        {/* Volume Number */}
         <div className="form-control">
           <label className="label">Volume</label>
           <input
@@ -136,6 +130,7 @@ export default function DeathCertificateForm() {
           )}
         </div>
 
+        {/* Declarant Information */}
         <div className="form-control">
           <label className="label">Nom du Déclarant</label>
           <input
@@ -160,6 +155,7 @@ export default function DeathCertificateForm() {
           )}
         </div>
 
+        {/* Profession */}
         <div className="form-control">
           <label className="label">Profession du Déclarant</label>
           <select
@@ -177,6 +173,7 @@ export default function DeathCertificateForm() {
           )}
         </div>
 
+        {/* Residence */}
         <div className="form-control">
           <label className="label">Résidence Principale</label>
           <input
@@ -198,6 +195,7 @@ export default function DeathCertificateForm() {
           />
         </div>
 
+        {/* Nationality */}
         <div className="form-control">
           <label className="label">Nationalité</label>
           <input
@@ -210,6 +208,7 @@ export default function DeathCertificateForm() {
           )}
         </div>
 
+        {/* Marital Status */}
         <div className="form-control">
           <label className="label">Statut au Décès</label>
           <select
@@ -227,15 +226,7 @@ export default function DeathCertificateForm() {
           )}
         </div>
 
-        <div className="form-control">
-          <label className="label">Identité du Conjoint (facultatif)</label>
-          <input
-            type="text"
-            {...register("conjoint_identite")}
-            className="input input-bordered w-full"
-          />
-        </div>
-
+        {/* Parent Information */}
         <div className="form-control">
           <label className="label">Nom du Père</label>
           <input
@@ -260,6 +251,7 @@ export default function DeathCertificateForm() {
           )}
         </div>
 
+        {/* Language */}
         <div className="form-control">
           <label className="label">Langue de Rédaction</label>
           <select
@@ -277,6 +269,7 @@ export default function DeathCertificateForm() {
           )}
         </div>
 
+        {/* Submit Button */}
         <div className="form-control mt-6">
           <button
             type="submit"

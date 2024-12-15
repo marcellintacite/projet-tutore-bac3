@@ -14,6 +14,7 @@ import Table from "@/components/dashboard/Table";
 import TableCommune from "@/components/dashboard/TableCommune";
 import Chart from "@/components/dashboard/Chart";
 import Card from "@/components/dashboard/Card";
+import DashboardChart from "./dashboard/admin-dash";
 
 type Props = {};
 
@@ -87,6 +88,8 @@ export default function Content({}: Props) {
           </div>
         )}
       </div>
+
+      {userRole === "admin" && <DashboardChart />}
     </div>
   );
 }
