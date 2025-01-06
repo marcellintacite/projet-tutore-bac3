@@ -16,79 +16,82 @@ import Chart from "@/components/dashboard/Chart";
 import Card from "@/components/dashboard/Card";
 import DashboardChart from "./dashboard/admin-dash";
 
-type Props = {};
-
-export default function Content({}: Props) {
+export default function Content() {
   const { userRole } = useSelector((state: storeType) => state.user);
-  console.log(userRole);
   const token = sessionStorage.getItem("access");
 
   const getTable = async (api: string) => {
     const res = await axiosCon.get(api);
     return res.data;
   };
+
+  // Define card data to avoid repetition
+  const cards = [
+    {
+      roles: ["admin", "hopital"],
+      lien: "/dashboard/certificat-de-naissance",
+      icon: <AiFillBuild className="text-3xl text-gray-900" />,
+      datafn: () => getTable(`/app/get_cn_per_hosp/${token}`),
+      label: "Certificat de naissance",
+    },
+    {
+      roles: ["admin", "hopital"],
+      lien: "/dashboard/certificat-de-deces",
+      icon: <AiFillFile className="text-3xl text-red-400" />,
+      datafn: () => getTable(`/app/get_certi_desc_par_hopital/${token}`),
+      label: "Certificat de décès",
+    },
+    {
+      roles: ["admin", "commune"],
+      lien: "/dashboard/acte-de-naissance",
+      icon: <AiFillHeart className="text-3xl text-secondary-100" />,
+      datafn: () => getTable(`/app/get_acte_naiss_par_commune/${token}`),
+      label: "Acte de naissance",
+    },
+    {
+      roles: ["admin", "commune"],
+      lien: "/dashboard/acte-de-deces",
+      icon: <AiFillCalendar className="text-3xl text-yellow-400" />,
+      datafn: () => getTable(`/app/get_acte_desc_par_commune/${token}`),
+      label: "Acte de décès",
+    },
+  ];
+
   return (
-    <div>
-      <div className="flex-col md:flex-row md:mx-5 flex flex-wrap gap-6 justify-start p-3 w-[95%] md:w-full">
-        {userRole === "admin" || userRole === "hopital" ? (
-          <>
+    <div className="p-4 w-full">
+      {/* Cards Section */}
+      <div className="flex flex-wrap gap-6 justify-start md:mx-5 w-[95%] md:w-full">
+        {cards
+          .filter((card) => card.roles.includes(userRole))
+          .map((card, index) => (
             <Card
-              lien="/dashboard/certificat-de-naissance"
-              icon={<AiFillBuild className="text-3xl text-gray-900" />}
-              datafn={() => getTable(`/app/get_cn_per_hosp/${token}`)}
-              label="Certificat de naissance"
+              key={index}
+              lien={card.lien}
+              icon={card.icon}
+              datafn={card.datafn}
+              label={card.label}
             />
-            <Card
-              lien="/dashboard/certificat-de-deces"
-              datafn={() =>
-                getTable(`/app/get_certi_desc_par_hopital/${token}`)
-              }
-              icon={<AiFillFile className="text-3xl text-red-400" />}
-              label="Certificat de decès"
-            />
-          </>
-        ) : null}
-
-        {userRole === "admin" || userRole === "commune" ? (
-          <>
-            <Card
-              lien="/dashboard/acte-de-naissance"
-              icon={<AiFillHeart className="text-3xl text-secondary-100" />}
-              label="Acte de naissance"
-              datafn={() =>
-                getTable(`/app/get_acte_naiss_par_commune/${token}`)
-              }
-            />
-
-            <Card
-              datafn={() => getTable(`/app/get_acte_desc_par_commune/${token}`)}
-              lien="/dashboard/acte-de-deces"
-              icon={<AiFillCalendar className="text-3xl text-yellow-400" />}
-              label="Acte de decès"
-            />
-          </>
-        ) : null}
+          ))}
       </div>
 
-      <div className="flex-col md:flex-row  md:mx-5 gap-5 justify-around mt-5 flex">
-        <div className="md:flex-1 w-[95%]">
-          {/* <h1 className="text-2xl font-bold">Liste des documents recents</h1> */}
-
+      {/* Tables and Charts Section */}
+      <div className="flex flex-col md:flex-row gap-5 justify-around mt-5 md:mx-5">
+        {/* Table Section */}
+        <div className="flex-1 w-[95%]">
           {userRole === "hopital" && <Table />}
-          {/* {userRole === "admin" && <Table />} */}
           {userRole === "commune" && <TableCommune />}
-          {/* {userRole === "admin" && <TableCommune />} */}
         </div>
 
+        {/* Chart Section */}
         {userRole === "commune" && (
-          <div className="w-4/5 md:w-2/5 bg-white rounded-lg p-4 m-auto h-auto min-h-[300px]">
-            <h1 className="text-2xl font-bold">Nombre d'opérations</h1>
-
+          <div className="w-full md:w-2/5 bg-white rounded-lg p-4 shadow-md">
+            <h1 className="text-lg font-semibold mb-4">Nombre d'opérations</h1>
             <Chart />
           </div>
         )}
       </div>
 
+      {/* Admin Dashboard Chart */}
       {userRole === "admin" && <DashboardChart />}
     </div>
   );

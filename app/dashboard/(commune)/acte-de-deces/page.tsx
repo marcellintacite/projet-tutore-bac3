@@ -39,7 +39,14 @@ export default function Page({}: Props) {
         path={"/dashboard/acte-de-deces"}
       />
       <Modal />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+      <div className="grid grid-cols-1 bg-white h-[40vh] md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+        {data.length === 0 && (
+          <div className="flex justify-center items-center w-full flex-col gap-3">
+            <p className="text-center text-gray-500">
+              Aucune donnée disponible
+            </p>
+          </div>
+        )}
         {data.map((certificate) => (
           <DeathCertificateCard
             key={certificate.cert_desc_id}

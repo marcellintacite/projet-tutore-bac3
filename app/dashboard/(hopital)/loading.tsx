@@ -1,22 +1,15 @@
-import React from "react";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-type Props = {};
-
-export default function loading({}: Props) {
+export default function Loading() {
   return (
-    <div className="md:mx-32 mt-4  h-screen">
-      <div className="flex justify-between">
-        <h2 className="my-3 text-3xl font-bold">
-          Certificat de <Skeleton width={200} /> <Skeleton width={200} />
-        </h2>
-        <div className="flex justify-between">
-          <Skeleton width={200} />
-          <Skeleton width={200} />
-        </div>
-      </div>
-      <div className="mt-7 pb-6 w-full">
-        <Skeleton className="w-full min-h-screen" />
+    <div className="p-6 space-y-6">
+      {/* Title Skeleton */}
+      <div className="skeleton h-8 w-1/3"></div>
+
+      {/* Cards Skeleton */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Card Skeletons */}
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div key={index} className="skeleton h-40 w-full rounded-lg"></div>
+        ))}
       </div>
     </div>
   );

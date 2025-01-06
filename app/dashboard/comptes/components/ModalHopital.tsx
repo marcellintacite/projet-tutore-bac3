@@ -27,6 +27,7 @@ export type Territoire = {
 }[];
 export default function ModalHopital() {
   const [provinces, setProvinces] = useState<province>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [territoires, setTerritoires] = useState<Territoire>([]);
   const {
     register,
@@ -54,16 +55,7 @@ export default function ModalHopital() {
     boite_postal,
     numeros_national,
   }) => {
-    console.log(
-      denom,
-      prov,
-      TerriVi,
-      password,
-      email,
-      username,
-      boite_postal,
-      numeros_national
-    );
+    setIsLoading(true);
     const idProvince = provinces.filter((p) => p.denom === prov)[0];
     const idTerritoire = territoires.filter((t) => t.denom === TerriVi)[0];
     const token = sessionStorage.getItem("access");
@@ -91,10 +83,11 @@ export default function ModalHopital() {
         reset();
         document.querySelector("dialog")?.close();
         toast.success("Hopital ajouté");
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
-
+        setIsLoading(false);
         if (err.response.status === 406) {
           toast.error("Cet hopital existe");
           reset();
@@ -259,7 +252,11 @@ export default function ModalHopital() {
 
           <div className="flex justify-end">
             <button className="btn-success btn rounded-md mt-4" type="submit">
-              Enreigistrer
+              {isLoading ? (
+                <span className="loading loading-spinner loading-xs"></span>
+              ) : (
+                "Enreigistrer"
+              )}
             </button>
           </div>
         </form>

@@ -11,7 +11,9 @@ export default function page({}: Props) {
   return (
     <div className="m-auto w-full  mx-3">
       <Navbar name="Dashboard" path={"/dashboard"} />
-      <Content />
+      <div className="w-full">
+        <Content />
+      </div>
     </div>
   );
 }

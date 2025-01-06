@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosCon from "@/libs/Axios";
 import { toast } from "react-hot-toast";
 import { useForm, SubmitHandler } from "react-hook-form";
-import axiosCon from "@/libs/Axios";
 import { getProvice, getTerritoire } from "@/libs/functions";
+
 type Input = {
   prov: string;
   denom: string;
@@ -23,9 +23,11 @@ type territoire = {
   denom: string;
   prov: number;
 }[];
+
 export default function ModalCommune() {
   const [provinces, setProvinces] = useState<province>([]);
   const [territoires, setTerritoires] = useState<territoire>([]);
+  const [isLoading, setIsLoading] = useState(false); // Loading state
   const {
     register,
     handleSubmit,
@@ -34,14 +36,14 @@ export default function ModalCommune() {
     formState: { errors },
   } = useForm<Input>();
 
-  //   Recherche des provinces
+  // Fetch provinces and territoires
   useEffect(() => {
     getProvice(setProvinces);
-    const idProvince = provinces.filter((p) => p.denom === watch("prov"))[0];
+    const idProvince = provinces.find((p) => p.denom === watch("prov"));
     idProvince && getTerritoire(setTerritoires, idProvince.id);
   }, [watch("prov")]);
 
-  const onSubmit: SubmitHandler<Input> = ({
+  const onSubmit: SubmitHandler<Input> = async ({
     denom,
     prov,
     TerriVi,
@@ -49,15 +51,13 @@ export default function ModalCommune() {
     nom_bour,
     username,
   }) => {
-    console.log(denom, prov, TerriVi, password, nom_bour, username);
-    const idProvince = provinces.filter((p) => p.denom === prov)[0];
-    const idTerritoire = territoires.filter((t) => t.denom === TerriVi)[0];
+    setIsLoading(true); // Start loading
+    const idProvince = provinces.find((p) => p.denom === prov);
+    const idTerritoire = territoires.find((t) => t.denom === TerriVi);
     const token = sessionStorage.getItem("access");
 
-    console.log(token);
-
-    axiosCon
-      .post("/user/create_commune", {
+    try {
+      await axiosCon.post("/user/create_commune", {
         token,
         new_user_commune: {
           username,
@@ -65,43 +65,40 @@ export default function ModalCommune() {
         },
         info_commune: {
           denom,
-          prov: idProvince.id,
-          TerriVi: idTerritoire.id,
+          prov: idProvince?.id,
+          TerriVi: idTerritoire?.id,
           nom_bour,
         },
-      })
-      .then((res) => {
-        reset();
-        document.querySelector("dialog")?.close();
-        toast.success("Commune ajouté");
-      })
-      .catch((err) => {
-        console.log(err);
-
-        if (err.response.status === 406) {
-          toast.error("Cette commune existe");
-          reset();
-          document.querySelector("dialog")?.close();
-        } else {
-          toast.error("Il y a une erreur inconnue");
-        }
       });
+      reset();
+      document.querySelector("dialog")?.close();
+      toast.success("Commune ajoutée");
+    } catch (err: any) {
+      if (err.response?.status === 406) {
+        toast.error("Cette commune existe déjà");
+      } else {
+        toast.error("Une erreur est survenue");
+      }
+    } finally {
+      setIsLoading(false); // End loading
+    }
   };
+
   return (
     <dialog id="my_modal_12" className="modal">
       <div className="modal-box px-6">
         <form method="dialog">
-          {/* if there is a button in form, it will close the modal */}
           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
             ✕
           </button>
         </form>
         <h3 className="font-bold text-lg">Ajouter un territoire</h3>
         <p className="py-4">
-          Veuillez completer tout les champs pour ajouter un territoire
+          Veuillez compléter tous les champs pour ajouter un territoire.
         </p>
-        <form className="" onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex gap-3">
+            {/* Province and Territoire Fields */}
             <div>
               <div className="form-control w-full">
                 <label className="label">
@@ -109,11 +106,7 @@ export default function ModalCommune() {
                 </label>
                 <select
                   className="select select-bordered rounded-md"
-                  {...register("prov", {
-                    required: "Ce champ est requis",
-                    minLength: 1,
-                    max: 3,
-                  })}
+                  {...register("prov", { required: "Ce champ est requis" })}
                 >
                   <option disabled selected>
                     Choisissez une province
@@ -130,11 +123,7 @@ export default function ModalCommune() {
                 </label>
                 <select
                   className="select select-bordered rounded-md"
-                  {...register("TerriVi", {
-                    required: "Ce champ est requis",
-                    minLength: 1,
-                    max: 3,
-                  })}
+                  {...register("TerriVi", { required: "Ce champ est requis" })}
                 >
                   <option disabled selected>
                     Choisissez un territoire
@@ -152,30 +141,25 @@ export default function ModalCommune() {
                 <input
                   type="text"
                   placeholder="Kadutu"
-                  required
-                  className="input input-bordered rounded-md w-full "
-                  {...register("denom", {
-                    required: "Ce champ est requis",
-                    minLength: 4,
-                  })}
+                  className="input input-bordered rounded-md w-full"
+                  {...register("denom", { required: "Ce champ est requis" })}
                 />
               </div>
+
               <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text">Nom bourgumestre:</span>
                 </label>
                 <input
                   type="text"
-                  placeholder="Meschack Njuci"
-                  required
-                  className="input input-bordered rounded-md w-full "
-                  {...register("nom_bour", {
-                    required: "Ce champ est requis",
-                    minLength: 4,
-                  })}
+                  placeholder="Dieume ..."
+                  className="input input-bordered rounded-md w-full"
+                  {...register("nom_bour", { required: "Ce champ est requis" })}
                 />
               </div>
             </div>
+
+            {/* Username and Password Fields */}
             <div>
               <div className="form-control w-full">
                 <label className="label">
@@ -183,13 +167,9 @@ export default function ModalCommune() {
                 </label>
                 <input
                   type="text"
-                  placeholder="tacitebahiga"
-                  required
-                  className="input input-bordered rounded-md w-full "
-                  {...register("username", {
-                    required: "Ce champ est requis",
-                    minLength: 4,
-                  })}
+                  placeholder="cika"
+                  className="input input-bordered rounded-md w-full"
+                  {...register("username", { required: "Ce champ est requis" })}
                 />
               </div>
               <div className="form-control w-full">
@@ -198,21 +178,25 @@ export default function ModalCommune() {
                 </label>
                 <input
                   type="password"
-                  placeholder="tacitebahiga"
-                  required
-                  className="input input-bordered rounded-md w-full "
-                  {...register("password", {
-                    required: "Ce champ est requis",
-                    minLength: 4,
-                  })}
+                  placeholder="sinza"
+                  className="input input-bordered rounded-md w-full"
+                  {...register("password", { required: "Ce champ est requis" })}
                 />
               </div>
             </div>
           </div>
 
-          <div className="flex justify-end">
-            <button className="btn-success btn rounded-md mt-4" type="submit">
-              Enreigistrer
+          {/* Submit Button with Loading Spinner */}
+          <div className="flex justify-end items-center gap-2 mt-4">
+            {isLoading && (
+              <span className="loading loading-spinner loading-xs"></span>
+            )}
+            <button
+              className="btn-success btn rounded-md"
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? "Enregistrement..." : "Enregistrer"}
             </button>
           </div>
         </form>

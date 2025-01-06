@@ -27,7 +27,7 @@ export default function TableCommune({}: Props) {
 
   if (isLoading)
     return (
-      <div className="w-full flex justify-center items-center pb-7 mt-5">
+      <div className="w-full flex justify-center items-center pb-7 mt-5 min-h-[40vh]">
         <span className="loading loading-spinner text-primary"></span>
       </div>
     );
@@ -36,10 +36,21 @@ export default function TableCommune({}: Props) {
   const dataShow = data?.slice(0, 5);
 
   return (
-    <div className="overflow-x-auto bg-white w-full min-h-8 rounded-md flex flex-wrap gap-5 p-4 justify-center items-center">
-      {dataShow.map((d: ActeNaissance) => (
-        <CardDocCommuneTable key={d.id} certificat={d} />
-      ))}
+    <div className="min-h-[40vh] bg-white p-3">
+      <h1 className="text-2xl font-bold mb-6">Liste des actes de naissance </h1>
+      <div className="overflow-x-auto  w-full min-h-8 rounded-md flex flex-wrap gap-5 p-4 justify-center items-center">
+        {dataShow.map((d: ActeNaissance) => (
+          <CardDocCommuneTable key={d.id} certificat={d} />
+        ))}
+
+        {dataShow.length === 0 && (
+          <div className="flex justify-center items-center w-full flex-col gap-3">
+            <p className="text-center text-gray-500">
+              Aucune donnée disponible
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

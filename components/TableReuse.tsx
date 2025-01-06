@@ -69,7 +69,7 @@ export default function TableReuse({}: Props) {
       )}
       <div
         className="
-      flex flex-wrap gap-5 p-4 mt-4 items-center justify-center
+      flex flex-wrap gap-5 p-4 mt-4 items-center 
     "
       >
         {!isLoading &&

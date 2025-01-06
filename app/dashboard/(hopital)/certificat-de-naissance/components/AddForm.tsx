@@ -8,6 +8,7 @@ import { changeStep, testData } from "@/libs/form";
 import CustomInput from "./Input";
 import { motion } from "framer-motion";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 
 type Input = {
   nom_enfant: string;
@@ -32,6 +33,7 @@ type Input = {
 type Props = {};
 
 const AddForm = (props: Props) => {
+  const navigate = useRouter();
   const [step, setStep] = useState(1);
   const {
     register,
@@ -54,10 +56,11 @@ const AddForm = (props: Props) => {
           new_certinaiss: data,
         })
         .then((res) => {
-          console.log(res)
+          console.log(res);
           reset();
           document.querySelector("dialog")?.close();
           toast.success("Ajouté avec succès");
+          navigate.push("/dashboard/hopital/certificat-de-naissance");
         })
         .catch((err: any) => {
           console.log(err);

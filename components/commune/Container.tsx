@@ -64,7 +64,7 @@ export default function CertificatNaissance({}: Props) {
       )}
       <div
         className="
-      flex flex-wrap gap-5 p-4 mt-4 items-center justify-center
+      flex flex-wrap gap-5 p-4 mt-4 items-center 
     "
       >
         {!isLoading &&
@@ -72,6 +72,14 @@ export default function CertificatNaissance({}: Props) {
           data.map((c: InputesActe) => (
             <CardDocCommune key={c.id} certificat={c} />
           ))}
+
+        {data.length === 0 && (
+          <div className="flex justify-center items-center w-full flex-col gap-3">
+            <p className="text-center text-gray-500">
+              Aucune donnée disponible
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

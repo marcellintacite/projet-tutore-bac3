@@ -98,7 +98,7 @@ export default function ModalTerritoire() {
 
           <div className="form-control w-full">
             <label className="label">
-              <span className="label-text">Nom territoire :</span>
+              <span className="label-text">Nom territoire / ville :</span>
             </label>
             <input
               type="text"
